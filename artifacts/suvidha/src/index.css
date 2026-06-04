@@ -415,15 +415,25 @@
   color: transparent !important;
   display: flex !important;
   align-items: center;
+  width: 100%;
 }
 .goog-te-gadget select {
-  font-size: 12px !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
   color: #ffffff !important;
-  background: rgba(255,255,255,0.15) !important;
-  padding: 3px 6px;
-  border-radius: 6px;
-  border: 1px solid rgba(255,255,255,0.3) !important;
-  cursor: pointer;
+  background: rgba(255,255,255,0.18) !important;
+  padding: 4px 8px !important;
+  border-radius: 8px !important;
+  border: 1px solid rgba(255,255,255,0.35) !important;
+  cursor: pointer !important;
+  width: 100% !important;
+  appearance: auto !important;
+  -webkit-appearance: auto !important;
+  outline: none !important;
+}
+.goog-te-gadget select option {
+  color: #1a1a1a !important;
+  background: #ffffff !important;
 }
 .goog-te-gadget span,
 .goog-te-gadget a,

@@ -1,9 +1,7 @@
-import { Bell, User, Volume2, VolumeX, Globe } from "lucide-react";
+import { Bell, User, Volume2, VolumeX } from "lucide-react";
 import { useLocation } from "wouter";
 import { cn } from "@/lib/utils";
-import { useTTS } from "@/contexts/LanguageContext";
-import { GoogleTranslateWidget } from "@/contexts/LanguageContext";
-import { useState } from "react";
+import { useTTS, GoogleTranslateWidget } from "@/contexts/LanguageContext";
 
 interface TopAppBarProps {
   title?: string;
@@ -13,46 +11,31 @@ interface TopAppBarProps {
 export default function TopAppBar({ title, className }: TopAppBarProps) {
   const [, setLocation] = useLocation();
   const { ttsEnabled, setTtsEnabled, supported } = useTTS();
-  const [showLang, setShowLang] = useState(false);
 
   return (
-    <>
-      <header className={cn(
-        "h-14 px-4 flex items-center justify-between bg-suvidha-navy text-white z-40 sticky top-0 shrink-0",
+    <header
+      className={cn(
+        "sticky top-0 z-40 shrink-0 bg-suvidha-navy text-white",
         className
-      )}>
-        {/* Left: logo + title */}
-        <div className="flex items-center gap-2.5 min-w-0">
+      )}
+    >
+      {/* Main bar */}
+      <div className="h-14 px-4 flex items-center justify-between gap-2">
+        {/* Logo + title */}
+        <div className="flex items-center gap-2 min-w-0">
           <div className="w-7 h-7 rounded-lg bg-white/15 flex items-center justify-center font-heading font-bold text-white text-sm shrink-0">
             S
           </div>
           {title ? (
-            <h1 className="font-heading font-semibold text-base truncate">{title}</h1>
+            <h1 className="font-heading font-semibold text-[15px] truncate">{title}</h1>
           ) : (
-            <span className="font-heading font-bold text-base tracking-tight">SUVIDHA</span>
+            <span className="font-heading font-bold text-[15px] tracking-tight">SUVIDHA</span>
           )}
         </div>
 
-        {/* Right: actions */}
+        {/* Right actions */}
         <div className="flex items-center gap-1 shrink-0">
-
-          {/* Language toggle button */}
-          <button
-            onClick={() => setShowLang(v => !v)}
-            className={cn(
-              "flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-colors",
-              showLang
-                ? "bg-suvidha-saffron text-white"
-                : "bg-white/15 text-white hover:bg-white/20"
-            )}
-            aria-label="Change language"
-            data-testid="button-language"
-          >
-            <Globe className="w-3.5 h-3.5" />
-            <span className="hidden xs:inline">Language</span>
-          </button>
-
-          {/* TTS toggle */}
+          {/* TTS */}
           {supported && (
             <button
               aria-label={ttsEnabled ? "Disable voice" : "Enable voice"}
@@ -87,25 +70,18 @@ export default function TopAppBar({ title, className }: TopAppBarProps) {
             <User className="w-4 h-4 text-white/90" />
           </button>
         </div>
-      </header>
+      </div>
 
-      {/* Language panel — drops below the header */}
-      {showLang && (
-        <div className="sticky top-14 z-30 bg-suvidha-navy/95 backdrop-blur-sm border-b border-white/10 px-4 py-3 flex items-center gap-3">
-          <Globe className="w-4 h-4 text-suvidha-saffron shrink-0" />
-          <p className="text-white text-xs font-semibold whitespace-nowrap">Translate page:</p>
-          <div className="flex-1">
-            {/* Actual Google Translate widget — styled via index.css */}
-            <GoogleTranslateWidget />
-          </div>
-          <button
-            onClick={() => setShowLang(false)}
-            className="text-white/50 hover:text-white text-xs px-2 py-1 rounded transition-colors shrink-0"
-          >
-            ✕
-          </button>
+      {/* Language bar — always visible below main bar */}
+      <div className="px-4 pb-2 flex items-center gap-2 border-t border-white/10">
+        <span className="text-white/50 text-[10px] font-semibold uppercase tracking-widest shrink-0">
+          🌐 Language:
+        </span>
+        {/* GoogleTranslateWidget is ALWAYS mounted so the script only inits once */}
+        <div className="flex-1">
+          <GoogleTranslateWidget />
         </div>
-      )}
-    </>
+      </div>
+    </header>
   );
 }
