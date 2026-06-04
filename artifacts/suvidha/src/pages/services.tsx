@@ -11,58 +11,66 @@ type ServiceItem = {
   label: string;
   icon: React.ElementType;
   route: string;
-  color: string;
-  bg: string;
+  iconBg: string;
+  iconColor: string;
 };
 
 const DEPT_DATA: Record<string, {
   title: string;
   icon: React.ElementType;
-  grad: string;
+  headerBg: string;
+  headerText: string;
+  headerSub: string;
   services: ServiceItem[];
 }> = {
   electricity: {
     title: "Electricity Services",
     icon: Zap,
-    grad: "from-amber-400 to-orange-500",
+    headerBg: "bg-amber-50 border-b border-amber-100",
+    headerText: "text-amber-800",
+    headerSub: "text-amber-600/70",
     services: [
-      { label: "New Connection",      icon: Plus,           route: "/service-form/new-connection?type=new-connection&dept=electricity",   color: "text-amber-600",  bg: "bg-amber-50"  },
-      { label: "Load Extension",      icon: ArrowRightLeft, route: "/service-form/load-extension?type=load-extension&dept=electricity",   color: "text-orange-600", bg: "bg-orange-50" },
-      { label: "Meter Replacement",   icon: Gauge,          route: "/service-form/meter-replacement?type=meter-replacement&dept=electricity", color: "text-blue-600", bg: "bg-blue-50" },
-      { label: "Bill Dispute",        icon: CreditCard,     route: "/service-form/complaint?type=complaint&dept=electricity",             color: "text-red-500",    bg: "bg-red-50"    },
-      { label: "Report Power Outage", icon: AlertTriangle,  route: "/service-form/complaint?type=complaint&dept=electricity",             color: "text-yellow-600", bg: "bg-yellow-50" },
-      { label: "Credential Mgmt",     icon: User2,          route: "/profile",                                                           color: "text-purple-600", bg: "bg-purple-50" },
-      { label: "Track Request",       icon: Search,         route: "/track",                                                             color: "text-teal-600",   bg: "bg-teal-50"   },
-      { label: "History & Receipts",  icon: FileText,       route: "/tickets",                                                           color: "text-gray-600",   bg: "bg-gray-100"  },
+      { label: "New Connection",      icon: Plus,           route: "/service-form/new-connection?type=new-connection&dept=electricity",      iconBg: "bg-amber-50",   iconColor: "text-amber-600"  },
+      { label: "Load Extension",      icon: ArrowRightLeft, route: "/service-form/load-extension?type=load-extension&dept=electricity",      iconBg: "bg-orange-50",  iconColor: "text-orange-600" },
+      { label: "Meter Replacement",   icon: Gauge,          route: "/service-form/meter-replacement?type=meter-replacement&dept=electricity", iconBg: "bg-blue-50",    iconColor: "text-blue-600"   },
+      { label: "Bill Dispute",        icon: CreditCard,     route: "/service-form/complaint?type=complaint&dept=electricity",                iconBg: "bg-red-50",     iconColor: "text-red-500"    },
+      { label: "Report Power Outage", icon: AlertTriangle,  route: "/service-form/complaint?type=complaint&dept=electricity",                iconBg: "bg-yellow-50",  iconColor: "text-yellow-600" },
+      { label: "Credential Mgmt",     icon: User2,          route: "/profile",                                                              iconBg: "bg-purple-50",  iconColor: "text-purple-600" },
+      { label: "Track Request",       icon: Search,         route: "/track",                                                                iconBg: "bg-teal-50",    iconColor: "text-teal-600"   },
+      { label: "History & Receipts",  icon: FileText,       route: "/tickets",                                                              iconBg: "bg-gray-100",   iconColor: "text-gray-500"   },
     ],
   },
   gas: {
     title: "Piped Gas Services",
     icon: Flame,
-    grad: "from-red-500 to-orange-500",
+    headerBg: "bg-red-50 border-b border-red-100",
+    headerText: "text-red-900",
+    headerSub: "text-red-600/70",
     services: [
-      { label: "New Gas Connection",  icon: Plus,          route: "/service-form/new-connection?type=new-connection&dept=gas",  color: "text-red-600",    bg: "bg-red-50"    },
-      { label: "Meter Replacement",   icon: Gauge,         route: "/service-form/meter-replacement?type=meter-replacement&dept=gas", color: "text-orange-600", bg: "bg-orange-50" },
-      { label: "Report Gas Leakage",  icon: AlertTriangle, route: "/service-form/complaint?type=complaint&dept=gas",           color: "text-yellow-700", bg: "bg-yellow-50" },
-      { label: "Register Complaint",  icon: Wrench,        route: "/service-form/complaint?type=complaint&dept=gas",           color: "text-blue-600",   bg: "bg-blue-50"   },
-      { label: "Track Request",       icon: Search,        route: "/track",                                                   color: "text-teal-600",   bg: "bg-teal-50"   },
-      { label: "Edit Credentials",    icon: User2,         route: "/profile",                                                 color: "text-purple-600", bg: "bg-purple-50" },
-      { label: "Receipts",            icon: FileText,      route: "/tickets",                                                 color: "text-gray-600",   bg: "bg-gray-100"  },
+      { label: "New Gas Connection",  icon: Plus,           route: "/service-form/new-connection?type=new-connection&dept=gas",  iconBg: "bg-red-50",    iconColor: "text-red-500"    },
+      { label: "Meter Replacement",   icon: Gauge,          route: "/service-form/meter-replacement?type=meter-replacement&dept=gas", iconBg: "bg-orange-50", iconColor: "text-orange-600" },
+      { label: "Report Gas Leakage",  icon: AlertTriangle,  route: "/service-form/complaint?type=complaint&dept=gas",           iconBg: "bg-yellow-50", iconColor: "text-yellow-700" },
+      { label: "Register Complaint",  icon: Wrench,         route: "/service-form/complaint?type=complaint&dept=gas",           iconBg: "bg-blue-50",   iconColor: "text-blue-600"   },
+      { label: "Track Request",       icon: Search,         route: "/track",                                                   iconBg: "bg-teal-50",   iconColor: "text-teal-600"   },
+      { label: "Edit Credentials",    icon: User2,          route: "/profile",                                                 iconBg: "bg-purple-50", iconColor: "text-purple-600" },
+      { label: "Receipts",            icon: FileText,       route: "/tickets",                                                 iconBg: "bg-gray-100",  iconColor: "text-gray-500"   },
     ],
   },
   municipal: {
     title: "Municipal Services",
     icon: Building2,
-    grad: "from-teal-500 to-cyan-600",
+    headerBg: "bg-teal-50 border-b border-teal-100",
+    headerText: "text-teal-900",
+    headerSub: "text-teal-600/70",
     services: [
-      { label: "New Water Connection", icon: Droplets,     route: "/service-form/water-connection?type=water-connection&dept=municipal", color: "text-blue-600",   bg: "bg-blue-50"   },
-      { label: "Register Grievance",   icon: AlertTriangle,route: "/grievance/new",                                                      color: "text-red-500",    bg: "bg-red-50"    },
-      { label: "Water Complaint",      icon: Droplets,     route: "/service-form/complaint?type=complaint&dept=municipal",               color: "text-cyan-600",   bg: "bg-cyan-50"   },
-      { label: "Sewage / Sanitation",  icon: Trash2,       route: "/service-form/complaint?type=complaint&dept=municipal",               color: "text-green-700",  bg: "bg-green-50"  },
-      { label: "Streetlight Repair",   icon: Lamp,         route: "/service-form/complaint?type=complaint&dept=municipal",               color: "text-yellow-600", bg: "bg-yellow-50" },
-      { label: "Property Tax",         icon: CreditCard,   route: "/service-form/complaint?type=complaint&dept=municipal",               color: "text-purple-600", bg: "bg-purple-50" },
-      { label: "Track Request",        icon: Search,       route: "/track",                                                              color: "text-teal-600",   bg: "bg-teal-50"   },
-      { label: "Update Profile",       icon: User2,        route: "/profile",                                                            color: "text-gray-600",   bg: "bg-gray-100"  },
+      { label: "New Water Connection", icon: Droplets,      route: "/service-form/water-connection?type=water-connection&dept=municipal", iconBg: "bg-blue-50",   iconColor: "text-blue-600"   },
+      { label: "Register Grievance",   icon: AlertTriangle, route: "/grievance/new",                                                      iconBg: "bg-red-50",    iconColor: "text-red-500"    },
+      { label: "Water Complaint",      icon: Droplets,      route: "/service-form/complaint?type=complaint&dept=municipal",               iconBg: "bg-cyan-50",   iconColor: "text-cyan-600"   },
+      { label: "Sewage / Sanitation",  icon: Trash2,        route: "/service-form/complaint?type=complaint&dept=municipal",               iconBg: "bg-green-50",  iconColor: "text-green-700"  },
+      { label: "Streetlight Repair",   icon: Lamp,          route: "/service-form/complaint?type=complaint&dept=municipal",               iconBg: "bg-yellow-50", iconColor: "text-yellow-600" },
+      { label: "Property Tax",         icon: CreditCard,    route: "/service-form/complaint?type=complaint&dept=municipal",               iconBg: "bg-purple-50", iconColor: "text-purple-600" },
+      { label: "Track Request",        icon: Search,        route: "/track",                                                              iconBg: "bg-teal-50",   iconColor: "text-teal-600"   },
+      { label: "Update Profile",       icon: User2,         route: "/profile",                                                            iconBg: "bg-gray-100",  iconColor: "text-gray-500"   },
     ],
   },
 };
@@ -78,23 +86,22 @@ export default function Services() {
       <div className="flex flex-col bg-gray-50 pb-6 min-h-full">
         <TopAppBar title={data.title} />
 
-        {/* Dept hero banner */}
-        <div className={`bg-gradient-to-r ${data.grad} px-5 pt-5 pb-6 relative overflow-hidden`}>
-          <div className="absolute -top-6 -right-6 w-32 h-32 bg-white/10 rounded-full blur-[30px]" />
-          <div className="flex items-center gap-4 relative z-10">
-            <div className="w-14 h-14 rounded-2xl bg-white/20 flex items-center justify-center shadow-lg">
-              <Icon className="w-7 h-7 text-white" />
+        {/* Muted dept header — no bold gradient */}
+        <div className={`px-5 pt-5 pb-5 ${data.headerBg}`}>
+          <div className="flex items-center gap-3.5">
+            <div className="w-12 h-12 rounded-2xl bg-white border border-gray-200 shadow-sm flex items-center justify-center">
+              <Icon className={`w-6 h-6 ${data.headerText}`} />
             </div>
             <div>
-              <h2 className="font-heading font-bold text-xl text-white">{data.title}</h2>
-              <p className="text-white/70 text-sm">Select a service to proceed</p>
+              <h2 className={`font-heading font-bold text-lg leading-tight ${data.headerText}`}>{data.title}</h2>
+              <p className={`text-sm ${data.headerSub}`}>Select a service to proceed</p>
             </div>
           </div>
         </div>
 
-        {/* Service list */}
+        {/* Service list — grouped card */}
         <div className="p-4">
-          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden divide-y divide-gray-100">
+          <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden divide-y divide-gray-100">
             {data.services.map((service) => {
               const ServiceIcon = service.icon;
               return (
@@ -104,8 +111,8 @@ export default function Services() {
                   onClick={() => setLocation(service.route)}
                   data-testid={`card-service-${service.label.toLowerCase().replace(/\s+/g, "-")}`}
                 >
-                  <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${service.bg}`}>
-                    <ServiceIcon className={`w-4.5 h-4.5 ${service.color}`} />
+                  <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${service.iconBg}`}>
+                    <ServiceIcon className={`w-4.5 h-4.5 ${service.iconColor}`} />
                   </div>
                   <span className="flex-1 font-semibold text-sm text-gray-800">{service.label}</span>
                   <ChevronRight className="w-4 h-4 text-gray-300 shrink-0" />

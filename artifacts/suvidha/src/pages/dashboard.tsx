@@ -4,7 +4,7 @@ import TopAppBar from "@/components/layout/TopAppBar";
 import ChatBot from "@/components/ChatBot";
 import {
   FileWarning, Zap, FileText, Search,
-  BellRing, ChevronRight, Plus, Flame, Building2, MapPin,
+  BellRing, ChevronRight, Plus, Flame, Building2,
   TrendingUp, Clock, CheckCircle2
 } from "lucide-react";
 
@@ -14,34 +14,26 @@ const ALERTS = [
   "Gas pipeline inspection in Zone 3 – Jun 7",
 ];
 
+/* Each action: label, icon, muted accent color (border + icon bg + icon color) */
 const QUICK_ACTIONS = [
-  { icon: FileWarning, label: "New Grievance",  sub: "File a complaint",    grad: "from-red-500 to-rose-600",     shadow: "shadow-red-200" },
-  { icon: Zap,         label: "Electricity",    sub: "Services & requests", grad: "from-amber-400 to-orange-500", shadow: "shadow-amber-200" },
-  { icon: Flame,       label: "Gas Services",   sub: "Connection & more",   grad: "from-orange-500 to-red-500",   shadow: "shadow-orange-200" },
-  { icon: Building2,   label: "Municipal",      sub: "Water, roads & more", grad: "from-teal-500 to-cyan-600",    shadow: "shadow-teal-200" },
-  { icon: Search,      label: "Track Request",  sub: "Check status",        grad: "from-violet-500 to-purple-600",shadow: "shadow-violet-200" },
-  { icon: FileText,    label: "My Tickets",     sub: "View all activity",   grad: "from-blue-500 to-indigo-600",  shadow: "shadow-blue-200" },
-];
-
-const ROUTES: Record<string, string> = {
-  "New Grievance": "/grievance/new",
-  "Electricity":   "/services/electricity",
-  "Gas Services":  "/services/gas",
-  "Municipal":     "/services/municipal",
-  "Track Request": "/track",
-  "My Tickets":    "/tickets",
-};
-
-const RECENT = [
-  { title: "Streetlight repair pending",    id: "SVD-8892", dept: "Municipal",    ago: "2 days ago",  status: "Assigned",     dot: "bg-amber-400",  badge: "bg-amber-50 text-amber-700" },
-  { title: "Gas Subsidy Renewal",           id: "SVD-8100", dept: "Gas",          ago: "5 days ago",  status: "Resolved",     dot: "bg-emerald-500",badge: "bg-emerald-50 text-emerald-700" },
-  { title: "New Electricity Connection",    id: "SVD-8845", dept: "Electricity",  ago: "1 week ago",  status: "Under Review", dot: "bg-blue-400",   badge: "bg-blue-50 text-blue-700" },
+  { icon: FileWarning, label: "New Grievance",  sub: "File a complaint",    border: "border-l-red-400",    iconBg: "bg-red-50",    iconColor: "text-red-500",    route: "/grievance/new" },
+  { icon: Zap,         label: "Electricity",    sub: "Services & requests", border: "border-l-amber-400",  iconBg: "bg-amber-50",  iconColor: "text-amber-600",  route: "/services/electricity" },
+  { icon: Flame,       label: "Gas Services",   sub: "Connection & more",   border: "border-l-orange-400", iconBg: "bg-orange-50", iconColor: "text-orange-600", route: "/services/gas" },
+  { icon: Building2,   label: "Municipal",      sub: "Water, roads & more", border: "border-l-teal-500",   iconBg: "bg-teal-50",   iconColor: "text-teal-600",   route: "/services/municipal" },
+  { icon: Search,      label: "Track Request",  sub: "Check status",        border: "border-l-violet-400", iconBg: "bg-violet-50", iconColor: "text-violet-600", route: "/track" },
+  { icon: FileText,    label: "My Tickets",     sub: "View all activity",   border: "border-l-blue-400",   iconBg: "bg-blue-50",   iconColor: "text-blue-600",   route: "/tickets" },
 ];
 
 const DEPTS = [
-  { label: "Electricity Services",   icon: Zap,       leftBar: "bg-amber-400",   iconBg: "bg-amber-50",   iconColor: "text-amber-500",  route: "/services/electricity" },
-  { label: "Piped Gas Services",     icon: Flame,     leftBar: "bg-red-400",     iconBg: "bg-red-50",     iconColor: "text-red-500",    route: "/services/gas" },
-  { label: "Municipal Corporation",  icon: Building2, leftBar: "bg-teal-400",    iconBg: "bg-teal-50",    iconColor: "text-teal-600",   route: "/services/municipal" },
+  { label: "Electricity Services",   icon: Zap,       bar: "bg-amber-400", iconBg: "bg-amber-50",   iconColor: "text-amber-600",  route: "/services/electricity" },
+  { label: "Piped Gas Services",     icon: Flame,     bar: "bg-red-400",   iconBg: "bg-red-50",     iconColor: "text-red-500",    route: "/services/gas" },
+  { label: "Municipal Corporation",  icon: Building2, bar: "bg-teal-500",  iconBg: "bg-teal-50",    iconColor: "text-teal-600",   route: "/services/municipal" },
+];
+
+const RECENT = [
+  { title: "Streetlight repair pending",  id: "SVD-8892", dept: "Municipal",   ago: "2 days ago",  status: "Assigned",     dot: "bg-amber-400",   badge: "bg-amber-50 text-amber-700"   },
+  { title: "Gas Subsidy Renewal",         id: "SVD-8100", dept: "Gas",         ago: "5 days ago",  status: "Resolved",     dot: "bg-emerald-500", badge: "bg-emerald-50 text-emerald-700" },
+  { title: "New Electricity Connection",  id: "SVD-8845", dept: "Electricity", ago: "1 week ago",  status: "Under Review", dot: "bg-blue-400",    badge: "bg-blue-50 text-blue-700"     },
 ];
 
 export default function Dashboard() {
@@ -54,54 +46,66 @@ export default function Dashboard() {
       <div className="flex flex-col bg-gray-50 pb-6">
         <TopAppBar />
 
-        {/* ── Hero ──────────────────────────────────── */}
-        <div className="relative bg-suvidha-navy px-5 pt-5 pb-8 overflow-hidden">
-          <div className="absolute -top-8 -right-8 w-48 h-48 bg-suvidha-teal/20 rounded-full blur-[50px]" />
-          <div className="absolute bottom-0 left-0 w-36 h-36 bg-suvidha-saffron/15 rounded-full blur-[40px]" />
-
+        {/* Hero */}
+        <div className="relative bg-suvidha-navy px-5 pt-5 pb-7 overflow-hidden">
+          <div className="absolute -top-6 -right-6 w-44 h-44 bg-suvidha-teal/15 rounded-full blur-[48px] pointer-events-none" />
           <p className="text-white/60 text-sm mb-0.5 relative z-10">{greeting},</p>
-          <h1 className="text-2xl font-heading font-bold text-white mb-5 relative z-10">Rohan Sharma</h1>
+          <h1 className="text-xl font-heading font-bold text-white mb-5 relative z-10">Rohan Sharma</h1>
 
-          <div className="grid grid-cols-3 gap-2.5 relative z-10">
-            <StatCard label="Active"   value="2"  icon={Clock}        bg="bg-amber-400/20"   val="text-amber-300" />
-            <StatCard label="Resolved" value="14" icon={CheckCircle2} bg="bg-emerald-400/20" val="text-emerald-300" />
-            <StatCard label="Pending"  value="1"  icon={TrendingUp}   bg="bg-blue-400/20"    val="text-blue-300" />
+          <div className="grid grid-cols-3 gap-2 relative z-10">
+            {[
+              { label: "Active",   value: "2",  icon: Clock,         color: "text-amber-300",   bg: "bg-white/10" },
+              { label: "Resolved", value: "14", icon: CheckCircle2,  color: "text-emerald-300", bg: "bg-white/10" },
+              { label: "Pending",  value: "1",  icon: TrendingUp,    color: "text-blue-300",    bg: "bg-white/10" },
+            ].map(s => {
+              const Icon = s.icon;
+              return (
+                <div key={s.label} className={`${s.bg} border border-white/10 rounded-xl p-2.5 flex flex-col gap-1`}>
+                  <Icon className={`w-3.5 h-3.5 ${s.color}`} />
+                  <div className={`text-lg font-bold ${s.color}`}>{s.value}</div>
+                  <div className="text-[10px] text-white/55 font-medium">{s.label}</div>
+                </div>
+              );
+            })}
           </div>
         </div>
 
         {/* Alert ticker */}
-        <div className="mx-4 mt-[-14px] relative z-10 bg-white rounded-2xl shadow-md border border-red-100 flex items-center gap-3 px-3 py-2.5 overflow-hidden">
-          <div className="w-7 h-7 rounded-full bg-red-50 flex items-center justify-center shrink-0">
+        <div className="mx-4 mt-[-12px] relative z-10 bg-white rounded-xl shadow-sm border border-red-100 flex items-center gap-2.5 px-3 py-2.5 overflow-hidden">
+          <div className="w-6 h-6 rounded-full bg-red-50 flex items-center justify-center shrink-0">
             <BellRing className="w-3.5 h-3.5 text-red-500" />
           </div>
           <div className="flex-1 overflow-hidden">
-            <p className="text-xs font-semibold text-foreground whitespace-nowrap animate-marquee">
+            <p className="text-xs font-semibold text-gray-700 whitespace-nowrap animate-marquee">
               {ALERTS.join("  •  ")}
             </p>
           </div>
         </div>
 
-        <div className="px-4 pt-5 space-y-6">
+        <div className="px-4 pt-5 space-y-5">
 
-          {/* Quick Actions */}
+          {/* Quick Actions — 2-col, white cards with colored left border */}
           <section>
-            <h3 className="text-[13px] font-bold text-gray-500 uppercase tracking-widest mb-3">Quick Actions</h3>
-            <div className="grid grid-cols-3 gap-2.5">
+            <h3 className="text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-2.5">Quick Actions</h3>
+            <div className="grid grid-cols-2 gap-2.5">
               {QUICK_ACTIONS.map(a => {
                 const Icon = a.icon;
                 return (
                   <button
                     key={a.label}
-                    onClick={() => setLocation(ROUTES[a.label])}
-                    className={`bg-gradient-to-br ${a.grad} rounded-2xl p-3.5 flex flex-col items-start
-                               shadow-md ${a.shadow} active:scale-95 transition-all text-left`}
+                    onClick={() => setLocation(a.route)}
+                    className={`bg-white rounded-xl border border-gray-100 border-l-4 ${a.border}
+                               shadow-sm px-3.5 py-3 flex items-center gap-3
+                               active:scale-[0.97] hover:shadow-md transition-all text-left`}
                     data-testid={`card-action-${a.label.toLowerCase().replace(/\s+/g, "-")}`}
                   >
-                    <div className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center mb-2">
-                      <Icon className="w-4.5 h-4.5 text-white" />
+                    <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${a.iconBg}`}>
+                      <Icon className={`w-4.5 h-4.5 ${a.iconColor}`} />
                     </div>
-                    <span className="text-white font-bold text-[11px] leading-tight">{a.label}</span>
-                    <span className="text-white/70 text-[9px] mt-0.5 leading-tight hidden sm:block">{a.sub}</span>
+                    <div className="min-w-0">
+                      <p className="font-semibold text-[13px] text-gray-800 leading-tight truncate">{a.label}</p>
+                      <p className="text-[10px] text-gray-400 mt-0.5 truncate">{a.sub}</p>
+                    </div>
                   </button>
                 );
               })}
@@ -110,23 +114,23 @@ export default function Dashboard() {
 
           {/* Department Services */}
           <section>
-            <h3 className="text-[13px] font-bold text-gray-500 uppercase tracking-widest mb-3">Department Services</h3>
-            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden divide-y divide-gray-100">
+            <h3 className="text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-2.5">Department Services</h3>
+            <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden divide-y divide-gray-100">
               {DEPTS.map(d => {
                 const Icon = d.icon;
                 return (
                   <button
                     key={d.label}
-                    className="w-full flex items-center gap-3 px-4 py-3.5 hover:bg-gray-50 active:bg-gray-100 transition-colors text-left"
+                    className="w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-50 active:bg-gray-100 transition-colors text-left"
                     onClick={() => setLocation(d.route)}
                     data-testid={`card-dept-${d.label.toLowerCase().replace(/\s+/g, "-")}`}
                   >
-                    <div className={`w-1 h-8 rounded-full shrink-0 ${d.leftBar}`} />
-                    <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${d.iconBg}`}>
-                      <Icon className={`w-4.5 h-4.5 ${d.iconColor}`} />
+                    <div className={`w-1 h-7 rounded-full shrink-0 ${d.bar}`} />
+                    <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${d.iconBg}`}>
+                      <Icon className={`w-4 h-4 ${d.iconColor}`} />
                     </div>
                     <span className="flex-1 font-semibold text-sm text-gray-800">{d.label}</span>
-                    <ChevronRight className="w-4 h-4 text-gray-400 shrink-0" />
+                    <ChevronRight className="w-4 h-4 text-gray-300 shrink-0" />
                   </button>
                 );
               })}
@@ -135,17 +139,17 @@ export default function Dashboard() {
 
           {/* Recent Activity */}
           <section>
-            <div className="flex items-center justify-between mb-3">
-              <h3 className="text-[13px] font-bold text-gray-500 uppercase tracking-widest">Recent Activity</h3>
+            <div className="flex items-center justify-between mb-2.5">
+              <h3 className="text-[11px] font-bold text-gray-400 uppercase tracking-widest">Recent Activity</h3>
               <Link href="/tickets" className="text-xs font-bold text-suvidha-navy">View All →</Link>
             </div>
-            <div className="flex flex-col gap-2.5">
+            <div className="flex flex-col gap-2">
               {RECENT.map(t => (
-                <div key={t.id} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex items-center gap-3">
-                  <div className={`w-2.5 h-2.5 rounded-full shrink-0 ${t.dot}`} />
+                <div key={t.id} className="bg-white rounded-xl border border-gray-100 shadow-sm p-3.5 flex items-center gap-3">
+                  <div className={`w-2 h-2 rounded-full shrink-0 ${t.dot} mt-0.5`} />
                   <div className="flex-1 min-w-0">
-                    <p className="font-semibold text-sm text-gray-800 truncate">{t.title}</p>
-                    <p className="text-[11px] text-gray-400 mt-0.5">{t.id} • {t.dept} • {t.ago}</p>
+                    <p className="font-semibold text-[13px] text-gray-800 truncate">{t.title}</p>
+                    <p className="text-[11px] text-gray-400 mt-0.5">{t.id} · {t.dept} · {t.ago}</p>
                   </div>
                   <span className={`text-[10px] font-bold px-2.5 py-1 rounded-full shrink-0 ${t.badge}`}>
                     {t.status}
@@ -156,34 +160,21 @@ export default function Dashboard() {
           </section>
         </div>
 
-        {/* FAB — fixed, contained inside phone frame via will-change-transform */}
+        {/* FAB */}
         <button
           onClick={() => setLocation("/grievance/new")}
-          className="fixed bottom-[5.5rem] right-3 w-13 h-13 bg-gradient-to-br from-suvidha-saffron to-orange-600
-                     rounded-full shadow-[0_6px_20px_rgba(255,128,0,0.45)] flex items-center justify-center
-                     text-white z-40 hover:scale-105 active:scale-95 transition-transform"
+          className="fixed z-40 flex items-center justify-center rounded-full
+                     bg-suvidha-saffron hover:bg-suvidha-saffron/90 active:scale-95
+                     shadow-[0_4px_16px_rgba(255,128,0,0.35)] text-white transition-all"
+          style={{ bottom: 80, right: 16, width: 50, height: 50 }}
           aria-label="File new grievance"
           data-testid="button-fab-grievance"
-          style={{ width: 52, height: 52 }}
         >
-          <Plus className="w-6 h-6" />
+          <Plus className="w-5 h-5" />
         </button>
 
-        {/* ChatBot */}
         <ChatBot />
       </div>
     </PageTransition>
-  );
-}
-
-function StatCard({ label, value, icon: Icon, bg, val }: {
-  label: string; value: string; icon: React.ElementType; bg: string; val: string;
-}) {
-  return (
-    <div className={`${bg} rounded-2xl p-3 border border-white/10 flex flex-col gap-1`}>
-      <Icon className={`w-4 h-4 ${val} mb-0.5`} />
-      <div className={`text-xl font-bold ${val}`}>{value}</div>
-      <div className="text-[10px] text-white/60 font-medium">{label}</div>
-    </div>
   );
 }
