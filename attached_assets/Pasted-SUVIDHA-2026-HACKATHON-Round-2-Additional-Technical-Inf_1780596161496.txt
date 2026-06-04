@@ -1,0 +1,490 @@
+SUVIDHA 2026 HACKATHON 
+Round 2 – Additional Technical Information 
+SUVIDHA – Smart Urban Virtual Interactive Digital Helpdesk Assistant 
+Field 
+Details 
+Team Name 
+Team Lead 
+Vision Buddies 
+Institution 
+Manasvi Gangrade 
+Problem Statement 
+Indore Institute of Science and Technology (IIST) 
+Contact Email 
+Smart Urban Digital Helpdesk Assistant (SUVIDHA) 
+Contact 
+gangrademanasvi@gmail.com 
++91 9752426358 
+1. Project Maturity & Development Status 
+1.1 Current Development Stage 
+Status 
+Stage 
+Description 
+☐ 
+Idea only  
+☐ 
+Prototype ready  
+☑ 
+MVP developed 
+Functional multi-department kiosk with 
+core service flows, authentication, 
+payments, complaint management, and 
+admin dashboard implemented and 
+demonstrated. 
+☐ 
+Fully functional system  
+1.2 Project Links 
+ GitHub Repository:  https://github.com/Manasvi-Gangrade/SUVIDHA
+Hackathon-2026 
+ Deployed Demo Link: https://suvidha-smart-civic-service-kiosk.vercel.app/ 
+ MVP Video with Explanation (13 min Approx): 
+https://drive.google.com/file/d/1ybj6J_Ca8lZZ4iAAmbXnM500VteIiCuZ/view?us
+p=sharing 
+ MVP Screen Recording (5 min approx.): https://drive.google.com/file/d/1
+6jjaTnSMoHN1D283qCU8LTv9gbPbnBO/view?usp=sharing 
+ Touch Based Kiosk Real Time Demonstration: 
+https://drive.google.com/file/d/1fkwN5z2BZVfmX1GoU6LkfKNj_tT34Sma/view?
+usp=sharing 
+Demo / Prototype Video: (Submitted Previously) 
+https://drive.google.com/file/d/10ZYAV5LRdR7iM558_2PHP
+NENyojZgFW/view?usp=sharing 
+1.3 What Has Been Built (MVP Scope) 
+The current MVP demonstrates end-to-end citizen interaction flows across all three 
+departments, including: 
+• Touch-optimized multi-page kiosk UI (React.js) with language selection and secure 
+authentication 
+• Electricity Department: Bill payment, complaint registration, and new connection 
+request with receipt generation 
+• Gas Department: New connection application, leakage complaint, and KYC 
+document upload 
+• Municipal Corporation: Water supply complaints, waste management grievances, 
+and civic request submission 
+• Real-time complaint and application status tracking with unique reference IDs 
+                                                                                          
+• Admin dashboard with service analytics, kiosk health monitoring, and complaint 
+resolution tracking 
+• SMS notification integration for OTP, acknowledgements, and status updates 
+2. Department-wise Features in Kiosk Touch Interface 
+2.1 Electricity Department 
+Service Category Features Available Output / Result 
+Bill Management View current & past electricity 
+bills, Pay via UPI/Card/Net 
+Banking 
+Instant digital receipt + print 
+New Connection Submit new electricity 
+connection request with 
+address & identity proof 
+upload 
+Application ID + 
+acknowledgement 
+Meter Complaints Report meter reading 
+disputes, billing errors, faulty 
+meter 
+Complaint ID + tracking link 
+Outage Reporting Report power outage, supply 
+interruptions, tripping issues 
+Complaint lodged + SMS alert 
+Status Tracking Track complaint/application 
+using reference ID across 
+visits 
+Real-time status display 
+Demand Notice View and acknowledge 
+demand notices / 
+disconnection warnings 
+Acknowledgement receipt 
+2.2 Gas Distribution Department 
+Service Category Features Available Output / Result 
+New Connection Apply for new 
+domestic/commercial gas 
+connection, upload KYC 
+documents 
+Application ID + 
+acknowledgement 
+Leakage Complaint Report gas leakage with 
+address verification and 
+priority flagging 
+Urgent complaint ID + SMS 
+Maintenance Request Request gas appliance 
+inspection, pipe maintenance, 
+regulator replacement 
+Service ticket + expected date 
+Subsidy Status Check LPG/PNG subsidy 
+eligibility, link Aadhaar for 
+DBT subsidy 
+Status display + instructions 
+                                                                                          
+Document Upload Upload Aadhaar, address 
+proof, ownership documents 
+for KYC verification 
+Upload confirmation + 
+reference 
+Application Tracking Track new connection or 
+service request status by 
+application ID 
+Live status with timeline 
+2.3 Municipal Corporation Department 
+Service Category Features Available Output / Result 
+Water Supply Report water shortage, 
+leakage, supply timing issues, 
+pipe burst 
+Complaint ID + tracking 
+Water Quality Register complaint for 
+contaminated/discolored 
+water supply 
+Priority complaint + alert 
+Sanitation & Waste Report garbage collection 
+failure, open drains, sanitation 
+issues 
+Grievance ID + SLA date 
+Civic Services Request streetlight repair, 
+pothole filling, stray animals, 
+encroachment 
+Service request + assignment 
+Notices & Announcements Access public notices, water 
+shutdown schedules, civic 
+alerts 
+Information display 
+Property Tax View property tax dues and 
+pay online (future integration 
+ready) 
+Payment receipt 
+Birth/Death Certificate Request certificate copies, 
+check application status 
+Document download/print 
+ 
+2.4 Future Department Expansion (Planned) 
+• Health Services: Vaccination camp registration, health card, dispensary 
+appointments 
+• Transport Department: Driving license status, vehicle tax payment, RC renewal 
+• Revenue Department: Land records, property mutation, income certificate request 
+• Education: Scholarship applications, school admission queries, fee payment 
+3. UI/UX Suitability for Touch-Based Kiosk Interface 
+3.1 Touch-First Design Principles 
+Yes, the SUVIDHA UI is specifically and exclusively designed for touch-based kiosk usage. 
+The design addresses unique kiosk interaction constraints that conventional web 
+applications do not consider. 
+3.2 Kiosk-Specific Design Decisions 
+Constraint 
+Design Decision 
+Rationale 
+No physical keyboard 
+No mouse/hover states 
+All inputs via on-screen 
+numeric keypad or dropdown 
+selections; text entry 
+minimized 
+Reduces user effort and 
+errors 
+Standing users / fatigue 
+All interactive elements are 
+large tap targets (minimum 
+48x48px) 
+Meets touch usability 
+standards 
+All critical actions placed in 
+the lower 60% of screen; no 
+scrolling required per step 
+Ergonomic for standing 
+interaction 
+                                                                                          
+Single session per user Auto-clear on timeout; no 
+persistent login; unique 
+session per visit 
+Privacy and security 
+No back button Dedicated Back and Cancel 
+buttons on every screen with 
+clear confirmation dialogs 
+Prevents accidental 
+navigation 
+Shared public device No browser controls visible; 
+kiosk lockdown mode; no 
+URL or tab access 
+Prevents misuse 
+Varying lighting High-contrast color scheme 
+with 4.5:1 minimum contrast 
+ratio; anti-glare display 
+Readable in all conditions 
+Low-literacy users Icon-first navigation with text 
+labels; progressive disclosure 
+of information 
+Inclusive usability 
+3.3 UI Component Specifications 
+• Button sizes: Minimum 64px height for primary actions, 48px for secondary actions 
+• Font sizes: Minimum 16px for body text, 20px for labels, 28px for headings – scalable 
+to large-font mode (1.5x) 
+• Color palette: High-contrast scheme with clear visual hierarchy; WCAG AA compliant 
+• Progress indicators: Step-by-step wizard with visual breadcrumbs showing current 
+step and total steps 
+• Feedback: Every touch interaction provides immediate visual feedback (color 
+change, ripple effect) 
+• Timeouts: 90-second inactivity warning with 30-second countdown before session 
+reset 
+• Error handling: Inline validation with clear, non-technical error messages and 
+suggested corrections 
+4. Deployment & Practical Feasibility 
+4.1 Deployment Overview 
+Parameter Details 
+Target Deployment Hybrid (Cloud backend + On-premise kiosk 
+hardware) 
+Cloud Provider AWS / NIC Cloud (Govt.) / Azure Government – configurable 
+Internet Dependency Medium – core features require connectivity; 
+critical features work offline 
+Offline Mode Yes – complaint registration, form filling, token 
+generation available offline 
+Kiosk OS 
+Connectivity Required 
+Ubuntu 22.04 LTS in locked kiosk mode (no 
+desktop access) 
+Deployment Footprint 
+Minimum 10 Mbps for payments and document 
+upload 
+Single kiosk: <100W power, 1 LAN/Wi-Fi 
+connection, UPS backup 
+4.2 Estimated Infrastructure Requirements 
+Per Kiosk Unit (Hardware): 
+• 21.5" Full HD Capacitive Touch Display – approx. ₹24,000 
+• Embedded PC / Mini-PC (Intel i3/i5, 8GB RAM, 256GB SSD) – approx. ₹18,000
+22,000 
+• Thermal Receipt Printer (80mm) – approx. ₹5,500 
+• Document Scanner (600 DPI) – approx. ₹8,000 
+• Audio (Speaker + Microphone) – approx. ₹2,500 
+• UPS 1200VA – approx. ₹10,000 
+• Metal Kiosk Enclosure – approx. ₹14,000 
+• Total per unit: approx. ₹82,000 – ₹92,000 (including compute) 
+Backend Infrastructure (Cloud, per 10 kiosks): 
+• 2 vCPU, 4GB RAM application server – approx. ₹3,000–5,000/month 
+• PostgreSQL managed database (50GB storage) – approx. ₹2,000–3,000/month 
+• SMS gateway (10,000 SMS/month) – approx. ₹1,000–1,500/month 
+• SSL certificate, domain, monitoring – approx. ₹500–1,000/month 
+4.3 Offline Mode Architecture 
+SUVIDHA uses a local-first caching approach for continuity during network outages: 
+                                                                                          
+• Service Worker + IndexedDB: Form data and in-progress applications cached locally 
+• Offline-capable features: Complaint registration, form filling, token/queue number 
+generation, information display 
+• Features requiring connectivity: Payment processing, OTP verification, real-time 
+status updates, document upload 
+• Sync mechanism: Automatic background sync when connectivity is restored; user 
+notified of pending submissions 
+• Conflict resolution: Timestamp-based last-write-wins with server-side validation on 
+sync 
+5. Accessibility & Inclusion Details 
+5.1 Accessibility Feature Matrix 
+Accessibility Need Supported Implementation Details 
+Visually Impaired Users Yes Screen narration (Web 
+Speech API), audio prompts 
+for every action, icon + text 
+combination navigation, high
+contrast mode 
+Senior Citizens Yes Large font mode (1.5x scale), 
+simplified 3-step workflows, 
+extended 3-minute session 
+timeout, large touch buttons 
+Motor Impaired Users Yes Large touch targets (minimum 
+64px), single-touch 
+confirmation for critical 
+actions, no multi-touch 
+gestures required 
+Low-Literacy Users Yes Icon-first navigation, visual 
+progress indicators, minimal 
+reading required for core 
+flows 
+Regional Language Support Yes Hindi + English default; 
+configurable regional 
+language (Marathi, Tamil, 
+Telugu, Gujarati) based on 
+deployment location 
+Voice-Based Navigation Yes (Partial) Text-to-speech output for all 
+screen elements; voice input 
+for search in future roadmap 
+Hearing Impaired Yes All audio instructions also 
+displayed as on-screen text; 
+no audio-only content 
+Color Blind Users 
+Yes 
+Status indicators use both 
+color AND icons/text; not 
+relying on color alone 
+Accessibility Interaction Architecture  
+5.2 UI Compliance Standards 
+• WCAG 2.1 Level AA compliance: Minimum 4.5:1 contrast ratio for text, 3:1 for UI 
+components 
+• Touch target sizing: Minimum 44x44px as per Apple HIG / Google Material Design 
+accessibility guidelines 
+• Keyboard/screen reader compatibility: All elements have ARIA labels and roles for 
+assistive technology 
+• Government UI Guidelines: Aligned with National Informatics Centre (NIC) UI/UX 
+guidelines for citizen-facing digital services 
+• BIS Guidelines: Designed in alignment with BIS IS 17802 draft standard for 
+accessible digital kiosks 
+5.3 Language & Localization Details 
+• Default languages: English and Hindi available on all deployments 
+• Regional configuration: Language set at deployment time based on city/state; no 
+software change required 
+• Font support: Unicode-based font rendering for all supported scripts (Devanagari, 
+Tamil, Telugu, etc.) 
+• Number formatting: Local number formats and date formats applied based on 
+language selection 
+• Government terms: Department names and service titles use official government 
+terminology in each language 
+Language & Localization Rendering Flow  
+6. Security Architecture & Design 
+6.1 Security by Design Philosophy 
+Security in SUVIDHA is not an afterthought — it is embedded as a foundational principle at 
+every layer of the system architecture. The approach follows Defence in Depth, where 
+multiple independent security controls protect citizen data and ensure transaction integrity 
+even if a single layer is compromised. 
+Layered Security Architecture (Defence in Depth)  
+                                                                                          
+ 
+6.2 Security Architecture Layers 
+Layer Security Control Implementation 
+Physical Layer Kiosk lockdown Ubuntu kiosk mode, locked 
+BIOS, disabled USB ports 
+(except authorized 
+peripherals), tamper-evident 
+enclosure 
+Network Layer Encrypted transport TLS 1.3 for all API 
+communication; HTTPS-only; 
+no HTTP fallback; certificate 
+pinning 
+Application Layer Input validation Server-side validation for all 
+inputs; SQL injection 
+prevention via parameterized 
+queries; XSS prevention via 
+output encoding 
+Authentication Layer OTP + session management Time-limited OTP (5 min 
+expiry); secure JWT tokens 
+(15 min validity); automatic 
+session logout on inactivity 
+Data Layer Encryption at rest AES-256 encryption for all 
+sensitive citizen data in 
+PostgreSQL; encrypted 
+database backups 
+Payment Layer PCI-DSS compliance No card data stored on kiosk 
+or backend; all payment 
+processed via certified 
+gateway tokenization 
+Audit Layer Comprehensive logging Time-stamped audit logs for 
+every transaction, login, and 
+data access event; tamper
+evident log storage 
+Access Control RBAC Strict role separation: Citizen, 
+Operator, Department Admin, 
+Super Admin; principle of 
+least privilege 
+Secure Request Lifecycle Flow  
+6.3 Security Integration into System Design 
+Security controls are designed into the architecture, not added after: 
+• Secure SDLC: Security requirements defined at the design stage; code review 
+checklists include OWASP Top 10 
+• Secrets Management: API keys, database credentials, and JWT secrets stored in 
+environment variables / vault; never hardcoded 
+• Dependency Security: npm audit and automated vulnerability scanning in the CI/CD 
+pipeline 
+• Kiosk Hardening: Only whitelisted applications can run; OS firewall restricts outbound 
+connections to approved backend endpoints only 
+• Data Minimization: Only data necessary for the specific service transaction is 
+collected and retained; no persistent citizen profiles without explicit consent 
+• Session Isolation: Each citizen session is completely isolated; no data from previous 
+sessions accessible after logout or timeout 
+Authentication, Session Isolation & Secrets Management Flow 
+                                                                                          
+ 
+6.4 Threat Modelling 
+Threat modelling has been performed using the STRIDE methodology (Spoofing, 
+Tampering, Repudiation, Information Disclosure, Denial of Service, Elevation of Privilege). 
+Key threats identified and mitigations implemented: 
+STRIDE Category Threat Identified Risk Level Mitigation 
+Implemented 
+Spoofing Impersonation of 
+citizen for service 
+access 
+High OTP-based 
+verification; session 
+binding to device 
+fingerprint 
+Tampering Modification of 
+payment amount 
+before processing 
+High Server-side payment 
+initiation; amount 
+never passed from 
+frontend; gateway 
+verification 
+Repudiation Denial of transaction 
+by citizen or operator 
+Medium Time-stamped audit 
+logs; signed receipts; 
+unique transaction 
+IDs 
+Info Disclosure Unauthorized access 
+to citizen data via 
+session hijack 
+High Short JWT expiry; 
+HTTPS-only; auto
+logout; session data 
+wiped on close 
+Denial of Service Kiosk made 
+unavailable through 
+request flooding 
+Medium API rate limiting (100 
+req/min per IP); 
+NGINX DDoS 
+protection; UPS for 
+power interruption 
+Privilege Escalation Operator accessing 
+admin functionality 
+Medium Strict RBAC with 
+server-side 
+enforcement; no role 
+data in client-side 
+tokens 
+Physical Tampering USB injection / kiosk 
+hardware 
+manipulation 
+Medium Disabled USB ports; 
+locked enclosure; 
+BIOS password; 
+secure boot 
+STRIDE Threat Mitigation Mapping  
+6.5 Compliance Summary 
+• Digital Personal Data Protection (DPDP) Act 2023: Explicit consent collection; 
+minimal data retention; right to erasure support 
+• Government IT Security Guidelines (CERT-In): Aligned with MeitY security 
+framework for e-governance applications 
+• PCI-DSS: Payment card data never stored; tokenized transactions through certified 
+gateways 
+• IT Act 2000 (Section 43A): Reasonable security practices for sensitive personal data 
+• RTI Readiness: All administrative transactions logged and exportable in structured 
+format for RTI compliance 
+Regulatory Compliance Alignment Framework 
+7. Summary & Competitive Advantage 
+SUVIDHA is a production-ready, citizen-first kiosk solution that uniquely combines: 
+Differentiator 
+How SUVIDHA Achieves It 
+Unified multi-department platform 
+True accessibility-first design 
+Single kiosk replaces counters across 
+Electricity, Gas, and Municipal departments 
+Offline resilience 
+WCAG AA compliance, voice guidance, large
+font mode, regional languages — not add-ons 
+Security by design 
+Local-first caching ensures critical services 
+remain available during connectivity loss 
+Scalable architecture 
+STRIDE threat modelling, Defence in Depth, 
+zero trust principles from day one 
+Government compliance ready 
+Microservices allow adding new departments 
+without rebuilding the platform 
+DPDP Act, CERT-In, PCI-DSS, and RTI
+readiness built into the design 
+SUVIDHA Differentiation-to-Impact Architecture  
+Declaration 
+We hereby declare that all information provided in this Round 2 Technical Proposal is true, 
+accurate, and represents original work. 
+Name: Manasvi Gangrade 
+Role: Team Lead – Vision Buddies 
+Institution: Indore Institute of Science and Technology 

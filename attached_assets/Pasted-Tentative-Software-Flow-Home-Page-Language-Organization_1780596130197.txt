@@ -1,0 +1,306 @@
+Tentative Software Flow* 
+Home Page – Language & Organization Selection 
+ The home page shall provide a language selection option supporting English, Hindi, or 
+Assamese. 
+ The system shall allow the user to select the preferred language before proceeding to 
+any service or organization selection. 
+ The home page shall display three organizations as distinct, clearly identifiable, 
+selectable options. Like Electricity, GAS or Municipality or other services .  
+ The system shall allow the user to select only one organization at a time. 
+ Upon organization selection, the system shall route the user to the respective 
+organization-specific authentication or service entry screen. 
+ The selected language shall persist throughout the user session and be applied 
+consistently across all subsequent screens. 
+PART 1:  
+The Electricity Module should have the following features: 
+1. Welcome Screen &User Login  
+2. New connection and load extension requests 
+3. Meter replacement (Meter Malfunction/Damage Request) and shifting services  
+4. Complaint registration  
+5. Credential management / Update consumer info   
+6. Track Request  
+7. Receipt generation and printing 
+Step 1: System Entry Point and User Login 
+*Participants are free to propose and implement additional functionalities. The listed 
+modules/flows are meant only to provide a high-level understanding. 
+Objective: Provide a secure, multilingual entry interface that authenticates consumers and 
+grants access to electricity-related services through a personalized dashboard. 
+Module Scope: 
+ Consumer authentication using multiple identifiers 
+ OTP-based verification for enhanced security 
+ Secure session management 
+ Controlled access to billing, service, and complaint modules 
+Step 2: New connection and load extension requests 
+Objective: Enable consumers to apply for a new electricity connection or request a sanctioned 
+load increase 
+Module Scope: 
+ Submission of new electricity connection requests 
+ Sanctioned load enhancement applications 
+ Capture of consumer details, premises information, and load requirements 
+ Upload of supporting documents 
+ Generation of application reference ID 
+Step 3: Meter replacement (Meter Malfunction/Damage Request) and shifting services  
+The Track Meter Status & Maintenance flowchart addresses Meter Malfunction/Damage issues 
+through meter health monitoring, malfunction reporting capabilities, and streamlined 
+replacement/repair request processing with TAT-based priority management. 
+Objective: Process consumer requests for meter replacement due to malfunction or damage, 
+and meter shifting due to relocation or renovation requirements. 
+Module Scope: 
+ Registration of meter malfunction or damage complaints 
+ Requests for meter shifting services 
+ Prioritization based on turnaround time (TAT) and severity 
+ Assignment to maintenance teams 
+ Status updates through tracking module 
+Step 4: Complaint registration   
+*Participants are free to propose and implement additional functionalities. The listed 
+modules/flows are meant only to provide a high-level understanding. 
+The Module provides a comprehensive solution for Incorrect Electricity Bill grievances. This 
+workflow encompasses bill lookup methods, detailed consumption analysis, historical 
+comparison tools, and structured dispute registration processes, all supported by 
+documentation. 
+Objective: Enable consumers to register grievances across multiple categories with evidence in 
+support , and User can select the complaint category from list: 
+ Incorrect Electricity Bill 
+ Delay in New Connection Approval 
+ Delay in Meter Replacement / Shifting 
+ Disconnection Without Prior Notice 
+ Other 
+Module Scope: 
+ Complaint registration with category selection 
+ Upload of documents or images as evidence 
+ Automatic ticket generation 
+ SLA-based grievance handling 
+ Acknowledgement receipt generation 
+Step 5: Credential management / Update consumer info   
+Objective: Allow consumers to update personal details and contact information 
+Module Scope: 
+ Update of contact details (mobile number, email, address) 
+ Ownership transfer and consumer detail correction 
+ Secure verification before applying changes 
+ Audit trail of updates 
+ Confirmation notification and receipt generation 
+Step 6: Track Requests/Complaints  
+Objective: Enable consumers to check real-time status of complaints and service requests 
+Module Scope: 
+ Tracking using application ID, ticket ID, or registered mobile number 
+*Participants are free to propose and implement additional functionalities. The listed 
+modules/flows are meant only to provide a high-level understanding. 
+ Display of request status, timeline, and remarks 
+ SLA visibility 
+ Option to print or download current status 
+Step 7: Receipt generation, printing and emailing  
+Objective: Provide printable receipts for all transactions and actions 
+Module Scope: 
+ Receipt generation for: 
+o New connection applications 
+o Load extension requests 
+o Complaint registrations 
+o Meter-related services 
+ Thermal printing support 
+ Digital receipt delivery via Email and SMS 
+PART 2:  
+Assam Gas Department Module should have the following features: 
+Table of Contents 
+1. Welcome Screen & User Login 
+2. Main Menu & Service Navigation 
+3. New Gas Connection / Connection Change Request 
+4. Register Complaint 
+5. Track Complaint / Service Request 
+6. Edit Credentials / Consumer Profile 
+7. Receipt Generation 
+1. Welcome Screen & User Login 
+*Participants are free to propose and implement additional functionalities. The listed 
+modules/flows are meant only to provide a high-level understanding. 
+Objective: 
+Provide a secure, inclusive, and multilingual entry point that allows consumers to authenticate 
+and access personalized gas service information through the kiosk. 
+Module Scope: 
+ Authentication using Consumer Account (CA) Number or Legacy Number 
+ Optional OTP-based mobile verification for enhanced security 
+ Secure session initialization and dashboard access 
+2. Main Menu & Service Navigation 
+Objective: 
+Offer a simple and intuitive service navigation menu enabling users to access all gas-related 
+services from a single interface. 
+Available Services: 
+ New Connection / Connection Change Request 
+ Meter Malfunction/Damage Request  
+ Check / View Bills  
+ Register Complaint 
+ Track Complaint / Request 
+ Edit Credentials 
+3. New Gas Connection / Connection Change Request 
+Objective: 
+Enable consumers to submit requests for new gas connections or changes to existing gas 
+services digitally, without physical office visits. 
+Module Scope: 
+ Request types including: 
+o New gas connection 
+o Meter installation or replacement 
+o Reconnect / Disconnect 
+o Postpaid to Prepaid conversion 
+o Pipeline inspection 
+o Maintenance scheduling 
+*Participants are free to propose and implement additional functionalities. The listed 
+modules/flows are meant only to provide a high-level understanding. 
+ Capture of service details and supporting document uploads 
+ Automatic request ticket generation 
+ Acknowledgement with expected processing timeline 
+ Notifications via SMS / Email / WhatsApp 
+4. Register Complaint 
+Objective: 
+Provide a formal digital mechanism for consumers to register gas-related grievances and ensure 
+traceable resolution. 
+Module Scope: 
+ Complaint registration using text or voice input 
+ Upload of supporting documents or images 
+ Automatic ticket ID generation 
+ SLA-based response time visibility 
+ Complaint notifications to consumer and concerned departments 
+ Printable acknowledgement receipt 
+5. Track Complaint / Service Request 
+Objective: 
+Enable consumers to track the real-time status of complaints and service requests with 
+transparency. 
+Module Scope: 
+ Tracking via Ticket ID or Mobile Number 
+ Display of submission date, current status, last update time, and remarks 
+ Visibility of resolution progress 
+ Option to print or download current status 
+6. Edit Credentials / Consumer Profile 
+Objective: 
+Allow consumers to securely update their personal and contact details to maintain accurate 
+service records. 
+Module Scope: 
+*Participants are free to propose and implement additional functionalities. The listed 
+modules/flows are meant only to provide a high-level understanding. 
+ Verification using Consumer ID or Aadhaar Number 
+ View and update profile details such as: 
+o Mobile number 
+o Name and personal details 
+ OTP-based verification for mobile number changes 
+ Audit logging of credential updates 
+ Notification of changes via SMS and Email 
+ Generation of update confirmation receipt 
+7. Receipt Generation 
+Objective: 
+Ensure transparency and provide verifiable proof of transactions and service requests through 
+printed and digital receipts. 
+Module Scope: 
+ Automatic receipt generation after transaction completion 
+ Thermal printer support for physical receipts 
+ Digital receipt delivery via Email and SMS 
+ Secure storage of receipt records 
+Part 3:  
+The Municipal Department Module should have the following features:  
+Table of Contents 
+1. Welcome Screen & User Login 
+2. New Water Connection / Connection Upgrade 
+3. Register Municipal Grievances 
+4. Receipt Generation  
+5. Track Request / Complaint 
+6. Credential Management / Update Consumer Info 
+Step 1: System Entry Point and User Login 
+*Participants are free to propose and implement additional functionalities. The listed 
+modules/flows are meant only to provide a high-level understanding. 
+Objective: 
+Provide a secure and user-friendly entry point to the kiosk system, enabling citizens to access 
+municipal services through authenticated and personalized dashboards. 
+Module Scope: 
+ Citizen authentication using Consumer ID, Mobile OTP, or Aadhaar-based verification 
+ Secure session creation and role-based access 
+ Routing to authorized municipal service modules 
+Step 2: Apply New Water Connection / Upgrade 
+Objective: 
+Enable citizens to digitally apply for new water connections or request upgrades to existing 
+water services without visiting municipal offices. 
+Module Scope: 
+ Submission of new connection or upgrade requests 
+ Capture of service address, connection type, and applicant details 
+ Upload of supporting documents (identity/address proof) 
+ Acknowledgement and application ID generation 
+ Status visibility through the tracking module 
+Step 3: Register Municipal Grievances 
+Objective: 
+Provide a centralized digital mechanism for citizens to report, document, and submit municipal 
+service-related grievances efficiently. 
+Covered Complaint Categories: 
+ Water Supply Disruption 
+ Sewage Overflow or Blockage 
+ Garbage Collection Irregularity 
+ Streetlight Failure 
+ Road Damage and Potholes 
+ Water Quality Complaints 
+ Property Tax Errors 
+ Other Municipal Issues 
+*Participants are free to propose and implement additional functionalities. The listed 
+modules/flows are meant only to provide a high-level understanding. 
+Step 4: Track Request / Complaint 
+Objective: 
+Enable citizens to transparently monitor the real-time status of submitted applications and 
+grievances. 
+Module Scope: 
+ Tracking using Ticket ID, Application ID, or Mobile Number 
+ Display of request lifecycle status (Submitted, In Progress, Resolved, Escalated, Closed) 
+ SLA adherence visibility 
+ Assigned officer and department details 
+ Option to download or print status summary 
+Step 5: Receipt Generation 
+Objective: 
+Offer receipts for all payments and requests. 
+Receipt Types 
+ Complaint Registration Receipt 
+ New Water Connection Receipt 
+ Property Tax Payment Receipt 
+ Profile Update Receipt 
+Step 6: Credential Management / Update Profile 
+Objective: 
+Allow citizens to securely update their personal and communication details to ensure accurate 
+service delivery and notifications. 
+Module Scope: 
+ View and edit consumer profile details 
+ OTP-based verification for sensitive updates (e.g., mobile number change) 
+ Masked display of sensitive identifiers (Aadhaar) 
+ Change audit trail and update acknowledgement 
+ Generation of update confirmation receipt 
+*Participants are free to propose and implement additional functionalities. The listed 
+modules/flows are meant only to provide a high-level understanding. 
+Other Reequipments:  
+ An AI Chatbot for users to ask queries 
+ The UI should be in accordance with the shape and size of KISOK. 
+ Accessibility for blind and elderly people. 
+ Admin Dashboard 
+Non-Functional (High Level) 
+ Touch-friendly UI 
+ Secure data handling 
+ Compliance with government IT and data security norms 
+Technical Specifications for Vertical 55” Touch Display Kiosk System 
+1. Display Specifications 
+ Screen Size: 55 inches 
+ Resolution: 3840 × 2160 (4K UHD) 
+ Viewing Angle (CR > 10): 178° (Horizontal) / 178° (Vertical) 
+ Color Support: 16.7 Million Colors 
+ Brightness: 300 cd/m² 
+ Contrast Ratio: ≥ 1400:1 
+ Response Time: < 8 ms 
+ Visible Area: 1210 (H) × 681 (V) mm 
+2. Touch Interface 
+ Touch Technology: Infrared (IR) Touch Frame 
+ Glass Protection: 3 mm Tempered Glass 
+ Touch Response Time: ≤ 2 ms 
+3. Connectivity & I/O Ports 
+ DC Input: 12V DC IN × 1 
+ USB Ports: 
+o USB 2.0 × 1 
+o USB 3.0 × 1 
+ Network: RJ45 IN × 1 
+*Participants are free to propose and implement additional functionalities. The listed 
+modules/flows are meant only to provide a high-level understanding. 
+ Video Input: HDMI IN × 1 
+ Storage Expansion: TF Card Slot × 1 
+ Audio: Earphone Jack × 1 
+4. Additionally, KIOSK can run Android 14   
+ RAM: 4 GB 
+ Internal Storage (ROM): 64 GB 
+*Participants are free to propose and implement additional functionalities. The listed 
+modules/flows are meant only to provide a high-level understanding. 
