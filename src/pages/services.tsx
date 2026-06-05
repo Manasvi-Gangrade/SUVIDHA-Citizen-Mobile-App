@@ -32,12 +32,12 @@ const DEPT_DATA: Record<string, {
     services: [
       { label: "New Connection",      icon: Plus,           route: "/service-form/new-connection?type=new-connection&dept=electricity",      iconBg: "bg-amber-50",   iconColor: "text-amber-600"  },
       { label: "Load Extension",      icon: ArrowRightLeft, route: "/service-form/load-extension?type=load-extension&dept=electricity",      iconBg: "bg-orange-50",  iconColor: "text-orange-600" },
-      { label: "Meter Replacement",   icon: Gauge,          route: "/service-form/meter-replacement?type=meter-replacement&dept=electricity", iconBg: "bg-blue-50",    iconColor: "text-blue-600"   },
+      { label: "Meter Replacement",   icon: Gauge,          route: "/service-form/meter-replacement?type=meter-replacement&dept=electricity", iconBg: "bg-suvidha-navy/10", iconColor: "text-suvidha-navy" },
       { label: "Bill Dispute",        icon: CreditCard,     route: "/service-form/complaint?type=complaint&dept=electricity",                iconBg: "bg-red-50",     iconColor: "text-red-500"    },
       { label: "Report Power Outage", icon: AlertTriangle,  route: "/service-form/complaint?type=complaint&dept=electricity",                iconBg: "bg-yellow-50",  iconColor: "text-yellow-600" },
       { label: "Credential Mgmt",     icon: User2,          route: "/profile",                                                              iconBg: "bg-purple-50",  iconColor: "text-purple-600" },
       { label: "Track Request",       icon: Search,         route: "/track",                                                                iconBg: "bg-teal-50",    iconColor: "text-teal-600"   },
-      { label: "History & Receipts",  icon: FileText,       route: "/tickets",                                                              iconBg: "bg-gray-100",   iconColor: "text-gray-500"   },
+      { label: "History & Receipts",  icon: FileText,       route: "/track",                                                                iconBg: "bg-gray-100",   iconColor: "text-gray-500"   },
     ],
   },
   gas: {
@@ -50,10 +50,10 @@ const DEPT_DATA: Record<string, {
       { label: "New Gas Connection",  icon: Plus,           route: "/service-form/new-connection?type=new-connection&dept=gas",  iconBg: "bg-red-50",    iconColor: "text-red-500"    },
       { label: "Meter Replacement",   icon: Gauge,          route: "/service-form/meter-replacement?type=meter-replacement&dept=gas", iconBg: "bg-orange-50", iconColor: "text-orange-600" },
       { label: "Report Gas Leakage",  icon: AlertTriangle,  route: "/service-form/complaint?type=complaint&dept=gas",           iconBg: "bg-yellow-50", iconColor: "text-yellow-700" },
-      { label: "Register Complaint",  icon: Wrench,         route: "/service-form/complaint?type=complaint&dept=gas",           iconBg: "bg-blue-50",   iconColor: "text-blue-600"   },
+      { label: "Register Complaint",  icon: Wrench,         route: "/service-form/complaint?type=complaint&dept=gas",           iconBg: "bg-suvidha-navy/10", iconColor: "text-suvidha-navy" },
       { label: "Track Request",       icon: Search,         route: "/track",                                                   iconBg: "bg-teal-50",   iconColor: "text-teal-600"   },
       { label: "Edit Credentials",    icon: User2,          route: "/profile",                                                 iconBg: "bg-purple-50", iconColor: "text-purple-600" },
-      { label: "Receipts",            icon: FileText,       route: "/tickets",                                                 iconBg: "bg-gray-100",  iconColor: "text-gray-500"   },
+      { label: "Receipts",            icon: FileText,       route: "/track",                                                   iconBg: "bg-gray-100",  iconColor: "text-gray-500"   },
     ],
   },
   municipal: {
@@ -63,7 +63,7 @@ const DEPT_DATA: Record<string, {
     headerText: "text-teal-900",
     headerSub: "text-teal-600/70",
     services: [
-      { label: "New Water Connection", icon: Droplets,      route: "/service-form/water-connection?type=water-connection&dept=municipal", iconBg: "bg-blue-50",   iconColor: "text-blue-600"   },
+      { label: "New Water Connection", icon: Droplets,      route: "/service-form/water-connection?type=water-connection&dept=municipal", iconBg: "bg-suvidha-navy/10", iconColor: "text-suvidha-navy" },
       { label: "Register Grievance",   icon: AlertTriangle, route: "/grievance/new",                                                      iconBg: "bg-red-50",    iconColor: "text-red-500"    },
       { label: "Water Complaint",      icon: Droplets,      route: "/service-form/complaint?type=complaint&dept=municipal",               iconBg: "bg-cyan-50",   iconColor: "text-cyan-600"   },
       { label: "Sewage / Sanitation",  icon: Trash2,        route: "/service-form/complaint?type=complaint&dept=municipal",               iconBg: "bg-green-50",  iconColor: "text-green-700"  },

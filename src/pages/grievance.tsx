@@ -12,7 +12,7 @@ import { useAccessibility } from "@/contexts/AccessibilityContext";
 
 const DEPARTMENTS = [
   { label: "Electricity",   icon: Zap,           bg: "bg-amber-50",  iconColor: "text-amber-600",  border: "border-amber-200" },
-  { label: "Water Supply",  icon: Droplets,       bg: "bg-blue-50",   iconColor: "text-blue-600",   border: "border-blue-200"  },
+  { label: "Water Supply",  icon: Droplets,       bg: "bg-suvidha-navy/10",   iconColor: "text-suvidha-navy",   border: "border-suvidha-navy/20"  },
   { label: "Sanitation",    icon: Trash2,         bg: "bg-green-50",  iconColor: "text-green-600",  border: "border-green-200" },
   { label: "Roads",         icon: AlertTriangle,  bg: "bg-orange-50", iconColor: "text-orange-600", border: "border-orange-200"},
   { label: "Public Parks",  icon: Trees,          bg: "bg-teal-50",   iconColor: "text-teal-600",   border: "border-teal-200"  },
@@ -60,13 +60,13 @@ export default function NewGrievance() {
           dept: dept,
           ago: "Just now",
           status: "Submitted",
-          dot: "bg-blue-400",
-          badge: "bg-blue-50 text-blue-700 border-blue-200"
+          dot: "bg-suvidha-navy/70",
+          badge: "bg-suvidha-navy/10 text-suvidha-navy border-suvidha-navy/20"
         };
         localStorage.setItem("suvidha_local_tickets", JSON.stringify([ticketRepresentation, ...localTickets]));
       }
       setSuccess(true);
-      setTimeout(() => setLocation("/tickets"), 4000);
+      setTimeout(() => setLocation("/track"), 4000);
     }
   };
 

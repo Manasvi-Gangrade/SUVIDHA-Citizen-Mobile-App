@@ -118,8 +118,8 @@ export default function ServiceForm() {
           dept: deptLabel,
           ago: "Just now",
           status: "Submitted",
-          dot: "bg-blue-400",
-          badge: "bg-blue-50 text-blue-700 border-blue-200"
+          dot: "bg-suvidha-navy/70",
+          badge: "bg-suvidha-navy/10 text-suvidha-navy border-suvidha-navy/20"
         };
         localStorage.setItem("suvidha_local_tickets", JSON.stringify([ticketRepresentation, ...localTickets]));
       }
@@ -149,7 +149,7 @@ export default function ServiceForm() {
             <span className="text-xl font-mono font-bold text-suvidha-navy">{refNo}</span>
           </Card>
           <div className="flex gap-3 w-full max-w-xs">
-            <Button variant="outline" className="flex-1 h-12 rounded-xl border-2 gap-2" onClick={() => setLocation("/tickets")}>
+            <Button variant="outline" className="flex-1 h-12 rounded-xl border-2 gap-2" onClick={() => setLocation("/track")}>
               <Search className="w-4 h-4" /> Track
             </Button>
             <Button className="flex-1 h-12 rounded-xl bg-suvidha-navy text-white gap-2">

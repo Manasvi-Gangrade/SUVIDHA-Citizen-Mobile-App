@@ -25,14 +25,14 @@ const TIMELINE_STEPS = ["Submitted", "Under Review", "Assigned to Officer", "Res
 
 const RECENT_PREVIEW = [
   { id: "SVD-8892", title: "Streetlight repair", dept: "Municipal",   status: "Assigned",     icon: Building2, dotColor: "bg-amber-400",   textColor: "text-amber-700",   bgColor: "bg-amber-50"  },
-  { id: "SVD-8845", title: "Electricity Connection", dept: "Electricity", status: "Under Review", icon: Zap,       dotColor: "bg-blue-400",    textColor: "text-blue-700",    bgColor: "bg-blue-50"   },
+  { id: "SVD-8845", title: "Electricity Connection", dept: "Electricity", status: "Under Review", icon: Zap,       dotColor: "bg-suvidha-navy/70",    textColor: "text-suvidha-navy",    bgColor: "bg-suvidha-navy/10"   },
   { id: "SVD-8100", title: "Gas Subsidy Renewal",    dept: "Piped Gas",   status: "Resolved",     icon: Flame,     dotColor: "bg-emerald-500", textColor: "text-emerald-700", bgColor: "bg-emerald-50"},
 ];
 
 const STATUS_STYLE: Record<string, { badge: string; dot: string }> = {
   "Resolved":     { badge: "bg-emerald-50 text-emerald-700 border border-emerald-200", dot: "bg-emerald-500" },
   "Assigned":     { badge: "bg-amber-50 text-amber-700 border border-amber-200",       dot: "bg-amber-400"   },
-  "Under Review": { badge: "bg-blue-50 text-blue-700 border border-blue-200",          dot: "bg-blue-400"    },
+  "Under Review": { badge: "bg-suvidha-navy/10 text-suvidha-navy border border-suvidha-navy/20", dot: "bg-suvidha-navy/70" },
   "In Progress":  { badge: "bg-teal-50 text-teal-700 border border-teal-200",          dot: "bg-teal-500"    },
 };
 

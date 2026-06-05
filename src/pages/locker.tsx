@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 const DOCUMENTS = [
-  { id: "1", type: "Aadhaar Card",     number: "XXXX-XXXX-8921", icon: FileText,  date: "Added Oct 2023", expiry: "Lifetime",     status: "verified",  iconBg: "bg-blue-50",   iconColor: "text-blue-600"  },
+  { id: "1", type: "Aadhaar Card",     number: "XXXX-XXXX-8921", icon: FileText,  date: "Added Oct 2023", expiry: "Lifetime",     status: "verified",  iconBg: "bg-suvidha-navy/10", iconColor: "text-suvidha-navy" },
   { id: "2", type: "Ration Card",      number: "XXXX-XXXX-4512", icon: File,      date: "Added Sep 2023", expiry: "Dec 2025",     status: "expiring",  iconBg: "bg-orange-50", iconColor: "text-orange-600"},
   { id: "3", type: "Electricity Bill", number: "BP No. 129033",  icon: FileImage, date: "Added Oct 2023", expiry: "Nov 2024",     status: "expired",   iconBg: "bg-red-50",    iconColor: "text-red-500"   },
   { id: "4", type: "PAN Card",         number: "AXXXX1234X",     icon: FileText,  date: "Added Aug 2023", expiry: "Lifetime",     status: "verified",  iconBg: "bg-purple-50", iconColor: "text-purple-600"},

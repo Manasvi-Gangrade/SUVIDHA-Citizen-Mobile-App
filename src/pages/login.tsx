@@ -1,23 +1,48 @@
 import { useState, useEffect } from "react";
-import { useLocation, useSearch } from "wouter";
+import { useLocation } from "wouter";
 import PageTransition from "@/components/PageTransition";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
-import { Shield, ArrowLeft, Check, Lock, Info, Smartphone, Eye, EyeOff } from "lucide-react";
+import {
+  Shield, ArrowLeft, Check, Lock, Info,
+  Smartphone, Eye, EyeOff, User, KeyRound,
+  Fingerprint, Flame, Zap, PhoneCall
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
+import { GoogleTranslateWidget } from "@/components/StandaloneTranslateTTS";
+import { toast } from "sonner";
 
-type LoginStep = "language_consent" | "dept_identifier" | "phone" | "otp";
+type LoginStep = "consent" | "dept_identifier" | "phone" | "otp";
 
 export default function Login() {
   const [, setLocation] = useLocation();
-  const search = useSearch();
   const { consentAccepted, setConsentAccepted } = useAccessibility();
-  
-  // Parse department from query params
-  const params = new URLSearchParams(search);
-  const deptParam = params.get("dept") as "electricity" | "gas" | "municipal" | null;
+
+  // Mode: citizen vs admin
+  const [loginMode, setLoginMode] = useState<"citizen" | "admin">("citizen");
+
+  // Citizen step state
+  const [step, setStep] = useState<LoginStep>("consent");
+  const [selectedDept, setSelectedDept] = useState<"electricity" | "gas" | "municipal">("electricity");
+  const [identifierType, setIdentifierType] = useState<"ca" | "aadhaar">("ca");
+  const [identifierVal, setIdentifierVal] = useState("");
+  const [phone, setPhone] = useState("");
+  const [otp, setOtp] = useState(["", "", "", "", "", ""]);
+
+  // Admin state
+  const [adminUser, setAdminUser] = useState("");
+  const [adminPass, setAdminPass] = useState("");
+  const [showAdminPass, setShowAdminPass] = useState(false);
+  const [admin2FA, setAdmin2FA] = useState("");
+
+  // Consent checkbox states
+  const [termsAccepted, setTermsAccepted] = useState(consentAccepted);
+  const [dataSharingAccepted, setDataSharingAccepted] = useState(consentAccepted);
+
+  // Biometric state
+  const [biometricScanning, setBiometricScanning] = useState(false);
 
   useEffect(() => {
     const user = localStorage.getItem("suvidha_user");
@@ -26,495 +51,549 @@ export default function Login() {
     }
   }, [setLocation]);
 
-  const [step, setStep] = useState<LoginStep>("language_consent");
-  const [selectedLanguage, setSelectedLanguage] = useState<"en" | "hi" | "as">("en");
-  const [selectedDept, setSelectedDept] = useState<"electricity" | "gas" | "municipal">(deptParam || "electricity");
-  const [identifierType, setIdentifierType] = useState<"ca" | "aadhaar">("ca");
-  const [identifierVal, setIdentifierVal] = useState("");
-  const [phone, setPhone] = useState("");
-  const [otp, setOtp] = useState(["", "", "", "", "", ""]);
-  
-  // Consent checkboxes
-  const [termsAccepted, setTermsAccepted] = useState(consentAccepted);
-  const [dataSharingAccepted, setDataSharingAccepted] = useState(consentAccepted);
-  
-  // Privacy Shielding
-  const [isAadhaarMasked, setIsAadhaarMasked] = useState(true);
-
-  // Translate labels based on selection
-  const t = {
-    en: {
-      title: "SUVIDHA Login Gateway",
-      subtitle: "Select preferred language & accept terms",
-      langSelect: "Select Preferred Language",
-      consentTitle: "DPDP Act 2023 Consent",
-      consent1: "I agree to the Terms of Service & Privacy Policy.",
-      consent2: "I authorize SUVIDHA to securely access my utility account identifiers for service delivery.",
-      btnNext: "Continue",
-      btnBack: "Back",
-      deptTitle: "Select Department & ID",
-      deptSub: "Choose a department to link your session",
-      electricity: "Electricity",
-      gas: "Piped Gas",
-      municipal: "Municipal",
-      idLabel: {
-        ca: "Consumer Account (CA) ID",
-        aadhaar: "Aadhaar Number"
-      },
-      idPlaceholder: {
-        ca: "e.g. APCL-8842",
-        aadhaar: "12-digit Aadhaar Number"
-      },
-      phoneTitle: "Mobile Verification",
-      phoneSub: "Enter mobile number associated with your ID",
-      otpTitle: "Verify Security OTP",
-      otpSub: "Sent dynamic code to",
-      btnVerify: "Verify & Proceed",
-      btnOtp: "Get OTP"
-    },
-    hi: {
-      title: "सुविधा लॉगिन गेटवे",
-      subtitle: "अपनी पसंद की भाषा चुनें और शर्तों को स्वीकार करें",
-      langSelect: "पसंदीदा भाषा चुनें",
-      consentTitle: "डीपीडीपी अधिनियम 2023 सहमति",
-      consent1: "मैं सेवा की शर्तों और गोपनीयता नीति से सहमत हूँ।",
-      consent2: "मैं सुविधा को सेवा वितरण के लिए मेरे उपयोगिता खाता पहचानकर्ताओं तक सुरक्षित रूप से पहुंचने के लिए अधिकृत करता हूँ।",
-      btnNext: "जारी रखें",
-      btnBack: "पीछे",
-      deptTitle: "विभाग और आईडी चुनें",
-      deptSub: "अपना सत्र जोड़ने के लिए एक विभाग चुनें",
-      electricity: "बिजली",
-      gas: "पाइप गैस",
-      municipal: "नगर पालिका",
-      idLabel: {
-        ca: "उपभोक्ता खाता (CA) आईडी",
-        aadhaar: "आधार संख्या"
-      },
-      idPlaceholder: {
-        ca: "उदा. APCL-8842",
-        aadhaar: "12-अंकीय आधार संख्या"
-      },
-      phoneTitle: "मोबाइल सत्यापन",
-      phoneSub: "अपनी आईडी से जुड़े मोबाइल नंबर दर्ज करें",
-      otpTitle: "सुरक्षा OTP सत्यापित करें",
-      otpSub: "डायनामिक कोड भेजा गया है",
-      btnVerify: "सत्यापित करें और आगे बढ़ें",
-      btnOtp: "ओटीपी प्राप्त करें"
-    },
-    as: {
-      title: "সুবিধা লগইন গেটৱে",
-      subtitle: "পছন্দৰ ভাষা বাছনি কৰক আৰু চৰ্তসমূহ স্বীকাৰ কৰক",
-      langSelect: "পছন্দৰ ভাষা বাছনি কৰক",
-      consentTitle: "DPDP আইন ২০২৩ সন্মতি",
-      consent1: "মই সেৱাৰ চৰ্তাৱলী আৰু গোপনীয়তা নীতিৰ সৈতে সন্মত হৈছোঁ।",
-      consent2: "মই সুবিধা পৰ্টেলক সেৱা প্ৰদানৰ বাবে মোৰ উপযোগিতা একাউণ্ট চিনাক্তকাৰীসমূহ সুৰক্ষিতভাৱে ব্যৱহাৰ কৰিবলৈ কৰ্তৃত্ব দিছোঁ।",
-      btnNext: "আগলৈ যাওক",
-      btnBack: "পাছলৈ",
-      deptTitle: "বিভাগ আৰু আইডি বাছনি কৰক",
-      deptSub: "আপোনাৰ সেশ্বন সংযোগ কৰিবলৈ এটা বিভাগ বাছক",
-      electricity: "বিদ্যুৎ",
-      gas: "পাইপ গেছ",
-      municipal: "পৌৰসভা",
-      idLabel: {
-        ca: "গ্ৰাহক একাউণ্ট (CA) আইডি",
-        aadhaar: "আধাৰ নম্বৰ"
-      },
-      idPlaceholder: {
-        ca: "उदा. APCL-8842",
-        aadhaar: "১২-টা সংখ্যাৰ আধাৰ নম্বৰ"
-      },
-      phoneTitle: "মোবাইল সত্যাপন",
-      phoneSub: "আপোনাৰ আইডিৰ সৈতে জড়িত মোবাইল নম্বৰ লিখক",
-      otpTitle: "সুৰক্ষা OTP সত্যাপন কৰক",
-      otpSub: "ডাইনামিক ক’ড প্ৰেৰণ কৰা হৈছে",
-      btnVerify: "সত্যপন কৰক আৰু আগবাঢ়ক",
-      btnOtp: "অ’টিপি প্ৰাপ্ত কৰক"
-    }
-  }[selectedLanguage];
-
-  const handleLanguageConsentSubmit = () => {
-    setConsentAccepted(true);
-    setStep("dept_identifier");
-  };
-
-  const handleDeptIdSubmit = () => {
-    if (identifierVal.trim().length > 3) {
-      setStep("phone");
-    }
-  };
-
-  const handlePhoneSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (phone.length === 10) setStep("otp");
-  };
-
-  const handleOtpSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Simulate setting citizen credentials in localStorage
-    localStorage.setItem("suvidha_user", JSON.stringify({
-      name: "Rohan Sharma",
-      phone: `+91 ${phone}`,
-      dept: selectedDept,
-      id: identifierVal
-    }));
+  const handleCitizenLogin = () => {
+    localStorage.setItem(
+      "suvidha_user",
+      JSON.stringify({
+        name: "Rohan Sharma",
+        phone: `+91 ${phone || "98765 43210"}`,
+        dept: selectedDept,
+        id: identifierVal || "APCL-8842",
+      })
+    );
+    toast.success("Welcome back Rohan! Session established.");
     setLocation("/dashboard");
   };
 
-  // Aadhaar masking formatter helper
-  const formatAadhaar = (val: string) => {
-    const raw = val.replace(/\D/g, "").slice(0, 12);
-    if (isAadhaarMasked) {
-      // e.g. XXXX-XXXX-1234
-      const visible = raw.slice(8);
-      let masked = "";
-      if (raw.length > 0) masked += "XXXX";
-      if (raw.length > 4) masked += "-XXXX";
-      if (raw.length > 8) masked += `-${visible}`;
-      return masked;
+  const handleAdminLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!adminUser || !adminPass) {
+      toast.error("Enter administrative credentials.");
+      return;
     }
-    // standard formatting: 1234-5678-9012
-    let formatted = "";
-    for (let i = 0; i < raw.length; i++) {
-      if (i > 0 && i % 4 === 0) formatted += "-";
-      formatted += raw[i];
-    }
-    return formatted;
+    toast.success("Official verification complete.");
+    setLocation("/admin");
   };
 
-  const handleIdentifierChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const rawVal = e.target.value.replace(/-/g, "");
-    if (identifierType === "aadhaar") {
-      // Allow only numbers
-      if (/^\d*$/.test(rawVal)) {
-        setIdentifierVal(rawVal.slice(0, 12));
-      }
-    } else {
-      setIdentifierVal(e.target.value);
-    }
+  const triggerBiometrics = () => {
+    setBiometricScanning(true);
+    setTimeout(() => {
+      setBiometricScanning(false);
+      localStorage.setItem(
+        "suvidha_user",
+        JSON.stringify({
+          name: "Rohan Sharma",
+          phone: "+91 98765 43210",
+          dept: "electricity",
+          id: "APCL-8842",
+        })
+      );
+      toast.success("Biometric match authenticated.");
+      setLocation("/dashboard");
+    }, 1400);
   };
 
   return (
     <PageTransition>
-      <div className="flex flex-col h-full bg-background pt-8 px-6 pb-24 relative overflow-hidden">
-        {/* Background Aurora Blobs */}
+      <div className="flex flex-col min-h-full bg-slate-50 pt-5 px-5 pb-20 relative overflow-x-hidden">
+        
+        {/* Decorative Blurred Mesh Gradients */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden -z-10">
-          <div className="absolute top-0 left-0 w-64 h-64 bg-suvidha-teal/10 rounded-full blur-[80px]" />
-          <div className="absolute bottom-10 right-0 w-60 h-60 bg-suvidha-saffron/10 rounded-full blur-[70px]" />
+          <div className="absolute -top-12 -left-12 w-72 h-72 bg-suvidha-saffron/10 rounded-full blur-[60px] animate-pulse" />
+          <div className="absolute top-1/3 right-[-40px] w-64 h-64 bg-suvidha-teal/15 rounded-full blur-[80px]" />
+          <div className="absolute bottom-5 left-10 w-80 h-80 bg-suvidha-navy/5 rounded-full blur-[90px]" />
         </div>
 
-        {/* Back navigation */}
-        {step === "language_consent" ? (
-          <button
-            onClick={() => setLocation("/onboarding")}
-            className="self-start p-2 rounded-xl bg-muted hover:bg-muted/80 transition-colors mb-4 flex items-center gap-1.5 text-sm font-semibold"
-          >
-            <ArrowLeft className="w-4 h-4" /> Back to Home
-          </button>
-        ) : (
-          <button
-            onClick={() => {
-              if (step === "dept_identifier") setStep("language_consent");
-              else if (step === "phone") setStep("dept_identifier");
-              else if (step === "otp") setStep("phone");
-            }}
-            className="self-start p-2 rounded-xl bg-muted hover:bg-muted/80 transition-colors mb-4 flex items-center gap-1.5 text-sm font-semibold"
-          >
-            <ArrowLeft className="w-4 h-4" /> {t.btnBack}
-          </button>
-        )}
+        {/* Toolbar Header */}
+        <div className="flex items-center justify-between mb-4 z-40 relative">
+          {loginMode === "citizen" && step !== "consent" ? (
+            <button
+              onClick={() => {
+                if (step === "dept_identifier") setStep("consent");
+                else if (step === "phone") setStep("dept_identifier");
+                else if (step === "otp") setStep("phone");
+              }}
+              className="w-8 h-8 rounded-full bg-white border border-gray-100 flex items-center justify-center text-gray-700 hover:bg-gray-50 active:scale-90 transition-transform shadow-2xs"
+            >
+              <ArrowLeft className="w-4 h-4" />
+            </button>
+          ) : (
+            <div className="w-8" />
+          )}
+          
+          <GoogleTranslateWidget />
+        </div>
 
-        <div className="flex flex-col items-center mt-4 mb-6">
-          <div className="w-14 h-14 bg-suvidha-navy rounded-2xl flex items-center justify-center mb-4 shadow-md border-b-3 border-suvidha-saffron">
-            <Shield className="w-7 h-7 text-white" />
+        {/* App Branding Section */}
+        <div className="flex flex-col items-center mt-1 mb-6">
+          <div className="relative mb-3.5 select-none">
+            {/* Outer animated halo ring */}
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
+              className="absolute -inset-1.5 rounded-2xl bg-gradient-to-tr from-suvidha-saffron to-suvidha-teal opacity-20 blur-xs"
+            />
+            <div className="relative w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-md border border-gray-100">
+              <svg viewBox="0 0 32 32" className="w-8 h-8">
+                <circle cx="16" cy="16" r="11" fill="none" stroke="#162D5A" strokeWidth="1.5" />
+                <circle cx="16" cy="16" r="2.5" fill="#162D5A" />
+                {Array.from({ length: 12 }).map((_, i) => {
+                  const a = (i * 30 * Math.PI) / 180;
+                  return (
+                    <line
+                      key={i}
+                      x1={16 + 3 * Math.cos(a)} y1={16 + 3 * Math.sin(a)}
+                      x2={16 + 10 * Math.cos(a)} y2={16 + 10 * Math.sin(a)}
+                      stroke={i % 3 === 0 ? "#FF8000" : "#162D5A"}
+                      strokeWidth={i % 3 === 0 ? "1.5" : "0.7"}
+                    />
+                  );
+                })}
+              </svg>
+            </div>
           </div>
-          <h1 className="text-xl font-heading font-bold text-foreground text-center">
-            {step === "language_consent" && t.title}
-            {step === "dept_identifier" && t.deptTitle}
-            {step === "phone" && t.phoneTitle}
-            {step === "otp" && t.otpTitle}
+          <h1 className="text-[21px] font-heading font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-suvidha-navy to-slate-900 tracking-tight text-center leading-tight">
+            SUVIDHA Gateway
           </h1>
-          <p className="text-muted-foreground text-center mt-1 text-xs max-w-xs">
-            {step === "language_consent" && t.subtitle}
-            {step === "dept_identifier" && t.deptSub}
-            {step === "phone" && t.phoneSub}
-            {step === "otp" && `${t.otpSub} +91 ${phone}`}
+          <p className="text-gray-400 text-center text-[10px] font-bold tracking-wider uppercase mt-0.5">
+            Smart Unified Civic Assistance
           </p>
         </div>
 
-        <AnimatePresence mode="wait">
-          {/* STEP 1: Language & DPDP Consent */}
-          {step === "language_consent" && (
-            <motion.div
-              key="lang_consent"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              className="flex flex-col gap-5 flex-1"
-            >
-              {/* Language Selection Gateway */}
-              <div className="space-y-2.5">
-                <label className="text-xs font-bold text-muted-foreground uppercase tracking-widest block">
-                  {t.langSelect}
-                </label>
-                <div className="grid grid-cols-3 gap-2">
-                  {[
-                    { code: "en", label: "English" },
-                    { code: "hi", label: "हिन्दी" },
-                    { code: "as", label: "অসমীয়া" }
-                  ].map(lang => (
-                    <button
-                      key={lang.code}
-                      onClick={() => setSelectedLanguage(lang.code as any)}
-                      className={cn(
-                        "h-12 rounded-xl font-bold border-2 transition-all text-sm flex items-center justify-center gap-1",
-                        selectedLanguage === lang.code
-                          ? "border-suvidha-saffron bg-suvidha-saffron/10 text-suvidha-navy"
-                          : "border-border text-muted-foreground hover:bg-muted/50"
-                      )}
-                    >
-                      {selectedLanguage === lang.code && <Check className="w-3.5 h-3.5 shrink-0" />}
-                      {lang.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
+        {/* Premium Sliding Segment Switcher (iOS style pill segment) */}
+        <div className="bg-gray-100/90 border border-gray-200/50 p-1 rounded-2xl flex relative w-full mb-6 select-none">
+          {/* Animated background sliding pill */}
+          <motion.div
+            layout
+            transition={{ type: "spring", stiffness: 350, damping: 28 }}
+            className="absolute top-1 bottom-1 rounded-xl bg-white shadow-xs border border-gray-200/60"
+            style={{
+              width: "calc(50% - 6px)",
+              left: loginMode === "citizen" ? 5 : "calc(50% + 1px)",
+            }}
+          />
+          <button
+            onClick={() => {
+              setLoginMode("citizen");
+              setStep("consent");
+            }}
+            className={cn(
+              "flex-1 py-2 text-center text-[11px] font-bold z-10 transition-colors rounded-xl flex items-center justify-center gap-1.5",
+              loginMode === "citizen" ? "text-suvidha-navy" : "text-gray-400 hover:text-gray-600"
+            )}
+          >
+            <User className="w-3.5 h-3.5" />
+            Citizen Login
+          </button>
+          <button
+            onClick={() => setLoginMode("admin")}
+            className={cn(
+              "flex-1 py-2 text-center text-[11px] font-bold z-10 transition-colors rounded-xl flex items-center justify-center gap-1.5",
+              loginMode === "admin" ? "text-suvidha-navy" : "text-gray-400 hover:text-gray-600"
+            )}
+          >
+            <KeyRound className="w-3.5 h-3.5" />
+            Official Portal
+          </button>
+        </div>
 
-              {/* DPDP Act consent card */}
-              <div className="bg-card rounded-2xl border border-card-border p-4.5 space-y-4 shadow-sm">
-                <div className="flex items-center gap-2 text-suvidha-navy border-b border-border pb-2.5">
-                  <Lock className="w-4.5 h-4.5 text-suvidha-saffron" />
-                  <span className="font-heading font-bold text-xs uppercase tracking-wider">{t.consentTitle}</span>
-                  <span className="ml-auto bg-suvidha-navy/10 text-suvidha-navy text-[9px] font-bold px-2 py-0.5 rounded-full">Compliance Shield</span>
-                </div>
-                
-                <div className="space-y-3">
-                  {/* Consent Checkbox 1 */}
-                  <label className="flex items-start gap-3 cursor-pointer select-none">
-                    <input
-                      type="checkbox"
-                      checked={termsAccepted}
-                      onChange={e => setTermsAccepted(e.target.checked)}
-                      className="mt-0.5 rounded text-suvidha-saffron focus:ring-suvidha-saffron w-4 h-4"
-                    />
-                    <span className="text-[11px] leading-normal font-semibold text-card-foreground">
-                      {t.consent1}
-                    </span>
-                  </label>
-
-                  {/* Consent Checkbox 2 */}
-                  <label className="flex items-start gap-3 cursor-pointer select-none">
-                    <input
-                      type="checkbox"
-                      checked={dataSharingAccepted}
-                      onChange={e => setDataSharingAccepted(e.target.checked)}
-                      className="mt-0.5 rounded text-suvidha-saffron focus:ring-suvidha-saffron w-4 h-4"
-                    />
-                    <span className="text-[11px] leading-normal font-semibold text-card-foreground">
-                      {t.consent2}
-                    </span>
-                  </label>
-                </div>
-                
-                <div className="flex items-start gap-2 bg-suvidha-navy/5 p-3 rounded-xl border border-suvidha-navy/10">
-                  <Info className="w-4 h-4 text-suvidha-navy shrink-0 mt-0.5" />
-                  <p className="text-[9px] leading-normal text-muted-foreground font-semibold">
-                    In compliance with India's DPDP Act 2023, your data remains fully encrypted client-side. Decryption keys never leave your secure enclave.
-                  </p>
-                </div>
-              </div>
-
-              <Button
-                onClick={handleLanguageConsentSubmit}
-                className="w-full h-13 text-base rounded-xl bg-suvidha-navy hover:bg-suvidha-navy/90 text-white mt-auto font-bold shadow-sm"
-                disabled={!termsAccepted || !dataSharingAccepted}
+        {/* Dynamic Glassmorphic input container */}
+        <div className="bg-white/95 backdrop-blur-md border border-white rounded-3xl shadow-[0_12px_40px_rgba(0,0,0,0.04)] p-6 flex-1 flex flex-col transition-all duration-300">
+          <AnimatePresence mode="wait">
+            
+            {/* CITIZEN LOGIN BLOCK */}
+            {loginMode === "citizen" && (
+              <motion.div
+                key="citizen-panel"
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 10 }}
+                className="flex flex-col flex-1"
               >
-                {t.btnNext} →
-              </Button>
-            </motion.div>
-          )}
-
-          {/* STEP 2: Department Selector & Account ID */}
-          {step === "dept_identifier" && (
-            <motion.div
-              key="dept_identifier"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              className="flex flex-col gap-5 flex-1"
-            >
-              {/* Department Cards */}
-              <div className="space-y-2">
-                <label className="text-xs font-bold text-muted-foreground uppercase tracking-widest block">
-                  Select Organization
-                </label>
-                <div className="flex flex-col gap-2">
-                  {[
-                    { key: "electricity", label: t.electricity, iconBg: "bg-amber-50 text-amber-600 border-amber-200" },
-                    { key: "gas", label: t.gas, iconBg: "bg-orange-50 text-orange-500 border-orange-200" },
-                    { key: "municipal", label: t.municipal, iconBg: "bg-teal-50 text-teal-600 border-teal-200" }
-                  ].map(dept => (
-                    <button
-                      key={dept.key}
-                      onClick={() => setSelectedDept(dept.key as any)}
-                      className={cn(
-                        "p-3.5 rounded-xl border-2 transition-all flex items-center justify-between text-left",
-                        selectedDept === dept.key
-                          ? "border-suvidha-navy bg-suvidha-navy/5 font-bold"
-                          : "border-border hover:bg-muted/30"
-                      )}
-                    >
-                      <span className="text-sm font-semibold">{dept.label}</span>
-                      {selectedDept === dept.key && <div className="w-5 h-5 rounded-full bg-suvidha-navy text-white flex items-center justify-center"><Check className="w-3 h-3" /></div>}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Identifier Type Choice */}
-              <div className="space-y-3">
-                <div className="flex border-b border-border">
-                  <button
-                    onClick={() => { setIdentifierType("ca"); setIdentifierVal(""); }}
-                    className={cn("flex-1 pb-2 text-xs font-bold border-b-2 uppercase tracking-widest",
-                      identifierType === "ca" ? "border-suvidha-saffron text-suvidha-navy" : "border-transparent text-muted-foreground")}
-                  >
-                    Utility Account ID
-                  </button>
-                  <button
-                    onClick={() => { setIdentifierType("aadhaar"); setIdentifierVal(""); }}
-                    className={cn("flex-1 pb-2 text-xs font-bold border-b-2 uppercase tracking-widest",
-                      identifierType === "aadhaar" ? "border-suvidha-saffron text-suvidha-navy" : "border-transparent text-muted-foreground")}
-                  >
-                    Aadhaar Verification
-                  </button>
-                </div>
-
-                <div className="space-y-2">
-                  <label className="text-xs font-semibold block text-card-foreground">
-                    {t.idLabel[identifierType]}
-                  </label>
-                  
-                  <div className="relative flex items-center">
-                    <Input
-                      type={identifierType === "aadhaar" ? "text" : "text"}
-                      className="h-12 pr-10 rounded-xl bg-card border-border"
-                      placeholder={t.idPlaceholder[identifierType]}
-                      value={identifierType === "aadhaar" ? formatAadhaar(identifierVal) : identifierVal}
-                      onChange={handleIdentifierChange}
-                    />
-                    
-                    {identifierType === "aadhaar" && (
-                      <button
-                        type="button"
-                        onClick={() => setIsAadhaarMasked(!isAadhaarMasked)}
-                        className="absolute right-3 text-muted-foreground hover:text-foreground"
-                      >
-                        {isAadhaarMasked ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                      </button>
-                    )}
+                {/* Step dot indices indicator */}
+                <div className="flex items-center justify-between mb-5 select-none">
+                  <span className="text-[10px] font-extrabold text-gray-400 uppercase tracking-widest">
+                    Verification Step {step === "consent" ? "1/4" : step === "dept_identifier" ? "2/4" : step === "phone" ? "3/4" : "4/4"}
+                  </span>
+                  <div className="flex gap-1.5">
+                    {["consent", "dept_identifier", "phone", "otp"].map((s) => (
+                      <div
+                        key={s}
+                        className={cn(
+                          "w-2 h-2 rounded-full transition-all duration-300",
+                          step === s ? "w-5 bg-suvidha-saffron" : "bg-gray-100"
+                        )}
+                      />
+                    ))}
                   </div>
                 </div>
-              </div>
 
-              <Button
-                onClick={handleDeptIdSubmit}
-                className="w-full h-13 text-base rounded-xl bg-suvidha-navy hover:bg-suvidha-navy/90 text-white mt-auto font-bold shadow-sm"
-                disabled={identifierVal.trim().length < (identifierType === "aadhaar" ? 12 : 4)}
+                {/* Step 1: Consent */}
+                {step === "consent" && (
+                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4 flex flex-col flex-1">
+                    <div className="flex items-center gap-2 pb-2 border-b border-gray-100">
+                      <Lock className="w-4 h-4 text-suvidha-saffron" />
+                      <h3 className="font-heading font-extrabold text-[13px] text-suvidha-navy uppercase tracking-wider">Consent Verification</h3>
+                    </div>
+
+                    <p className="text-[11px] text-gray-400 leading-relaxed font-medium">
+                      In compliance with India's DPDP Act 2023, please authorize data queries to initialize your secure session.
+                    </p>
+
+                    <div className="space-y-3 pt-2">
+                      <label className="flex items-start gap-3 cursor-pointer select-none bg-slate-50 hover:bg-slate-100/70 p-3 rounded-2xl border border-gray-100 transition-colors">
+                        <input
+                          type="checkbox"
+                          checked={termsAccepted}
+                          onChange={e => setTermsAccepted(e.target.checked)}
+                          className="mt-0.5 rounded text-suvidha-saffron focus:ring-suvidha-saffron w-4 h-4 border-gray-300"
+                        />
+                        <span className="text-[10px] leading-normal font-bold text-gray-600">
+                          I agree to terms of service & client-side encryption policy.
+                        </span>
+                      </label>
+
+                      <label className="flex items-start gap-3 cursor-pointer select-none bg-slate-50 hover:bg-slate-100/70 p-3 rounded-2xl border border-gray-100 transition-colors">
+                        <input
+                          type="checkbox"
+                          checked={dataSharingAccepted}
+                          onChange={e => setDataSharingAccepted(e.target.checked)}
+                          className="mt-0.5 rounded text-suvidha-saffron focus:ring-suvidha-saffron w-4 h-4 border-gray-300"
+                        />
+                        <span className="text-[10px] leading-normal font-bold text-gray-600">
+                          I authorize SUVIDHA to fetch utility records for my account.
+                        </span>
+                      </label>
+                    </div>
+
+                    {/* Biometrics simulator circle */}
+                    <div className="pt-3 flex flex-col items-center">
+                      <button
+                        onClick={triggerBiometrics}
+                        disabled={biometricScanning}
+                        className={cn(
+                          "w-12 h-12 rounded-full border border-gray-200 flex items-center justify-center relative active:scale-90 transition-transform bg-white",
+                          biometricScanning ? "shadow-inner border-suvidha-saffron" : "shadow-sm hover:border-gray-300"
+                        )}
+                        title="Simulate Biometric Fingerprint"
+                      >
+                        {biometricScanning ? (
+                          <div className="absolute inset-0 rounded-full border-2 border-suvidha-saffron border-t-transparent animate-spin" />
+                        ) : (
+                          <Fingerprint className="w-5 h-5 text-suvidha-saffron animate-pulse" />
+                        )}
+                      </button>
+                      <span className="text-[9px] text-gray-400 font-bold mt-1.5 uppercase tracking-wider">
+                        {biometricScanning ? "Scanning FaceID..." : "Quick Biometric Login"}
+                      </span>
+                    </div>
+
+                    <Button
+                      onClick={() => setStep("dept_identifier")}
+                      disabled={!termsAccepted || !dataSharingAccepted}
+                      className="w-full h-12 text-xs rounded-xl bg-suvidha-navy hover:bg-suvidha-navy/95 text-white mt-auto font-bold shadow-sm active:scale-[0.98] transition-transform"
+                    >
+                      Accept & Continue
+                    </Button>
+                  </motion.div>
+                )}
+
+                {/* Step 2: Department and ID */}
+                {step === "dept_identifier" && (
+                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4 flex flex-col flex-1">
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-extrabold text-gray-400 uppercase tracking-widest block">
+                        Select Department
+                      </label>
+                      <div className="grid grid-cols-3 gap-2">
+                        {[
+                          { id: "electricity", name: "Electricity", icon: Zap, bg: "bg-amber-500", text: "text-amber-500" },
+                          { id: "gas", name: "Piped Gas", icon: Flame, bg: "bg-orange-500", text: "text-orange-500" },
+                          { id: "municipal", name: "Municipal", icon: PhoneCall, bg: "bg-teal-500", text: "text-teal-500" },
+                        ].map(d => {
+                          const Icon = d.icon;
+                          const active = selectedDept === d.id;
+                          return (
+                            <button
+                              key={d.id}
+                              onClick={() => setSelectedDept(d.id as any)}
+                              className={cn(
+                                "py-3.5 rounded-2xl border flex flex-col items-center justify-center gap-1.5 transition-all font-bold text-[10px] active:scale-95",
+                                active
+                                  ? "border-suvidha-saffron bg-orange-50/70 text-suvidha-navy shadow-2xs"
+                                  : "border-gray-100 hover:bg-gray-50 text-gray-400"
+                              )}
+                            >
+                              <Icon className={cn("w-4.5 h-4.5", active ? d.text : "text-gray-300")} />
+                              {d.name}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    <div className="space-y-2.5 pt-2">
+                      <div className="flex justify-between items-center">
+                        <label className="text-[10px] font-extrabold text-gray-400 uppercase tracking-widest">
+                          Account Identifier
+                        </label>
+                        <div className="flex bg-gray-100 p-0.5 rounded-lg border border-gray-200/50">
+                          <button
+                            onClick={() => { setIdentifierType("ca"); setIdentifierVal(""); }}
+                            className={cn("text-[9px] font-bold px-2 py-0.5 rounded-md transition-all", identifierType === "ca" ? "bg-white text-suvidha-navy shadow-3xs" : "text-gray-400")}
+                          >
+                            CA ID
+                          </button>
+                          <button
+                            onClick={() => { setIdentifierType("aadhaar"); setIdentifierVal(""); }}
+                            className={cn("text-[9px] font-bold px-2 py-0.5 rounded-md transition-all", identifierType === "aadhaar" ? "bg-white text-suvidha-navy shadow-3xs" : "text-gray-400")}
+                          >
+                            Aadhaar
+                          </button>
+                        </div>
+                      </div>
+
+                      <div className="relative">
+                        <Input
+                          type="text"
+                          placeholder={identifierType === "ca" ? "e.g. APCL-8842" : "12-digit Aadhaar Number"}
+                          value={identifierVal}
+                          onChange={(e) => {
+                            const raw = e.target.value;
+                            if (identifierType === "aadhaar") {
+                              if (/^\d*$/.test(raw)) setIdentifierVal(raw.slice(0, 12));
+                            } else {
+                              setIdentifierVal(raw);
+                            }
+                          }}
+                          className="h-11 px-4.5 rounded-xl border-gray-200 focus:border-suvidha-saffron focus:ring-4 focus:ring-suvidha-saffron/10 font-bold text-gray-700 text-sm placeholder:text-gray-300"
+                        />
+                      </div>
+                    </div>
+
+                    <Button
+                      onClick={() => setStep("phone")}
+                      disabled={identifierVal.trim().length < 4}
+                      className="w-full h-12 text-xs rounded-xl bg-suvidha-navy hover:bg-suvidha-navy/95 text-white mt-auto font-bold shadow-sm active:scale-[0.98] transition-transform"
+                    >
+                      Next Step
+                    </Button>
+                  </motion.div>
+                )}
+
+                {/* Step 3: Phone */}
+                {step === "phone" && (
+                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4 flex flex-col flex-1">
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-extrabold text-gray-400 uppercase tracking-widest block mb-1">
+                        Registered Mobile Number
+                      </label>
+                      <div className="relative flex items-center">
+                        <span className="absolute left-4 text-sm font-bold text-gray-400 select-none">+91</span>
+                        <Input
+                          type="tel"
+                          placeholder="98765 43210"
+                          value={phone}
+                          onChange={(e) => {
+                            const val = e.target.value.replace(/\D/g, "");
+                            if (val.length <= 10) setPhone(val);
+                          }}
+                          className="h-11 pl-12 pr-4 rounded-xl border-gray-200 focus:border-suvidha-saffron focus:ring-4 focus:ring-suvidha-saffron/10 font-bold text-gray-700 text-sm tracking-wide"
+                        />
+                      </div>
+                      <p className="text-[10px] text-gray-400 font-semibold leading-relaxed mt-1">
+                        We will send a dynamic 6-digit security code to this number.
+                      </p>
+                    </div>
+
+                    <Button
+                      onClick={() => setStep("otp")}
+                      disabled={phone.length !== 10}
+                      className="w-full h-12 text-xs rounded-xl bg-suvidha-navy hover:bg-suvidha-navy/95 text-white mt-auto font-bold shadow-sm active:scale-[0.98] transition-transform"
+                    >
+                      Send Verification Code
+                    </Button>
+                  </motion.div>
+                )}
+
+                {/* Step 4: OTP */}
+                {step === "otp" && (
+                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4 flex flex-col flex-1">
+                    <div className="space-y-3.5">
+                      <label className="text-[10px] font-extrabold text-gray-400 uppercase tracking-widest block text-center">
+                        Input Security Code
+                      </label>
+                      <div className="flex gap-2 justify-center">
+                        {Array.from({ length: 6 }).map((_, idx) => (
+                          <input
+                            key={idx}
+                            id={`otp-box-${idx}`}
+                            type="text"
+                            maxLength={1}
+                            value={otp[idx] || ""}
+                            onChange={(e) => {
+                              const val = e.target.value;
+                              if (/^\d*$/.test(val)) {
+                                const newOtp = [...otp];
+                                newOtp[idx] = val;
+                                setOtp(newOtp);
+                                if (val && idx < 5) {
+                                  document.getElementById(`otp-box-${idx + 1}`)?.focus();
+                                }
+                              }
+                            }}
+                            onKeyDown={(e) => {
+                              if (e.key === "Backspace" && !otp[idx] && idx > 0) {
+                                document.getElementById(`otp-box-${idx - 1}`)?.focus();
+                              }
+                            }}
+                            className="w-10 h-11 border border-gray-200 rounded-xl text-center font-bold text-base text-gray-700 focus:outline-none focus:ring-4 focus:ring-suvidha-saffron/10 focus:border-suvidha-saffron transition-all"
+                          />
+                        ))}
+                      </div>
+                      <div className="flex justify-between items-center text-[10px] font-bold mt-1">
+                        <span className="text-gray-400">Resend SMS code in 30s</span>
+                        <button className="text-suvidha-saffron hover:underline">Resend Now</button>
+                      </div>
+                    </div>
+
+                    <Button
+                      onClick={handleCitizenLogin}
+                      disabled={otp.filter(Boolean).length !== 6}
+                      className="w-full h-12 text-xs rounded-xl bg-suvidha-navy hover:bg-suvidha-navy/95 text-white mt-auto font-bold shadow-sm active:scale-[0.98] transition-transform"
+                    >
+                      Authenticate Portal
+                    </Button>
+                  </motion.div>
+                )}
+
+              </motion.div>
+            )}
+
+            {/* ADMINISTRATOR LOGIN BLOCK */}
+            {loginMode === "admin" && (
+              <motion.div
+                key="admin-panel"
+                initial={{ opacity: 0, x: 10 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -10 }}
+                className="flex flex-col flex-1 space-y-4"
               >
-                {t.btnNext} →
-              </Button>
-            </motion.div>
-          )}
-
-          {/* STEP 3: Phone Number */}
-          {step === "phone" && (
-            <motion.div
-              key="phone"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              className="flex flex-col gap-5 flex-1"
-            >
-              <div className="space-y-2">
-                <label className="text-xs font-bold text-muted-foreground uppercase tracking-widest block">
-                  Mobile Number
-                </label>
-                <div className="relative flex items-center">
-                  <span className="absolute left-4 font-semibold text-muted-foreground text-sm">+91</span>
-                  <Input
-                    type="tel"
-                    maxLength={10}
-                    className="pl-12 h-13 text-lg bg-card border-border rounded-xl"
-                    placeholder="99999 99999"
-                    value={phone}
-                    onChange={e => setPhone(e.target.value.replace(/\D/g, ""))}
-                    autoFocus
-                  />
+                <div className="flex items-center gap-2 pb-2 border-b border-gray-100">
+                  <Lock className="w-4 h-4 text-suvidha-saffron" />
+                  <h3 className="font-heading font-extrabold text-[13px] text-suvidha-navy uppercase tracking-wider">Admin Portal</h3>
                 </div>
-              </div>
 
-              <div className="bg-muted/30 p-3.5 rounded-xl border border-border flex items-start gap-2.5">
-                <Smartphone className="w-4.5 h-4.5 text-suvidha-navy shrink-0 mt-0.5" />
-                <p className="text-[10px] leading-normal text-muted-foreground font-semibold">
-                  A dynamic security verification code will be sent to this number. SMS charges may apply.
-                </p>
-              </div>
+                <form onSubmit={handleAdminLogin} className="space-y-4 flex flex-col flex-1">
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-extrabold text-gray-400 uppercase tracking-widest block">
+                      Username / Official ID
+                    </label>
+                    <div className="relative">
+                      <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                      <Input
+                        type="text"
+                        placeholder="e.g. admin_guwahati"
+                        value={adminUser}
+                        onChange={(e) => setAdminUser(e.target.value)}
+                        className="h-11 pl-10 rounded-xl border-gray-200 focus:border-suvidha-saffron focus:ring-4 focus:ring-suvidha-saffron/10 font-bold text-gray-700 text-sm placeholder:text-gray-300"
+                      />
+                    </div>
+                  </div>
 
-              <Button
-                onClick={handlePhoneSubmit}
-                className="w-full h-13 text-base rounded-xl bg-suvidha-navy hover:bg-suvidha-navy/90 text-white mt-auto font-bold shadow-sm"
-                disabled={phone.length !== 10}
-              >
-                {t.btnOtp}
-              </Button>
-            </motion.div>
-          )}
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-extrabold text-gray-400 uppercase tracking-widest block">
+                      Secure Password
+                    </label>
+                    <div className="relative">
+                      <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                      <Input
+                        type={showAdminPass ? "text" : "password"}
+                        placeholder="••••••••••••"
+                        value={adminPass}
+                        onChange={(e) => setAdminPass(e.target.value)}
+                        className="h-11 pl-10 pr-10 rounded-xl border-gray-200 focus:border-suvidha-saffron focus:ring-4 focus:ring-suvidha-saffron/10 font-bold text-gray-700 text-sm placeholder:text-gray-300"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowAdminPass(!showAdminPass)}
+                        className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                      >
+                        {showAdminPass ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      </button>
+                    </div>
+                  </div>
 
-          {/* STEP 4: OTP verification */}
-          {step === "otp" && (
-            <motion.div
-              key="otp"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              className="flex flex-col gap-6 flex-1"
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-extrabold text-gray-400 uppercase tracking-widest block">
+                      Two-Factor TOTP (Google Auth)
+                    </label>
+                    <Input
+                      type="text"
+                      maxLength={6}
+                      placeholder="6-digit code"
+                      value={admin2FA}
+                      onChange={(e) => {
+                        const val = e.target.value.replace(/\D/g, "");
+                        setAdmin2FA(val.slice(0, 6));
+                      }}
+                      className="h-11 rounded-xl border-gray-200 focus:border-suvidha-saffron focus:ring-4 focus:ring-suvidha-saffron/10 font-bold text-gray-700 text-sm placeholder:text-gray-300 text-center tracking-widest font-mono"
+                    />
+                  </div>
+
+                  <div className="bg-slate-50 border border-slate-100 p-3 rounded-2xl flex gap-2.5 mt-1">
+                    <Shield className="w-4.5 h-4.5 text-suvidha-saffron shrink-0 mt-0.5" />
+                    <p className="text-[9px] leading-normal text-gray-400 font-bold uppercase tracking-wider">
+                      Authorized access only. Log monitoring is active.
+                    </p>
+                  </div>
+
+                  <Button
+                    type="submit"
+                    className="w-full h-12 text-xs rounded-xl bg-suvidha-navy hover:bg-suvidha-navy/95 text-white mt-auto font-bold shadow-sm active:scale-[0.98] transition-transform"
+                  >
+                    Authenticate Admin Securely
+                  </Button>
+                </form>
+              </motion.div>
+            )}
+
+          </AnimatePresence>
+        </div>
+
+        {/* Quick Emergency Helplines at bottom */}
+        <div className="mt-6 border-t border-gray-200/50 pt-4.5">
+          <p className="text-[10px] font-extrabold text-gray-400 uppercase tracking-widest mb-3 text-center">
+            🚨 Quick Utility Emergency Help
+          </p>
+          <div className="grid grid-cols-2 gap-3 text-[10px] font-bold text-gray-600">
+            <a
+              href="tel:1912"
+              className="bg-white border border-gray-100 p-2.5 rounded-2xl flex items-center gap-2 hover:bg-gray-50 shadow-2xs transition-colors"
             >
-              <div className="flex justify-between gap-2 px-1">
-                {otp.map((digit, i) => (
-                  <Input
-                    key={i}
-                    id={`otp-${i}`}
-                    type="text"
-                    maxLength={1}
-                    className="w-11 h-13 text-center text-lg font-bold bg-card border-border rounded-xl focus:border-suvidha-saffron focus:ring-suvidha-saffron"
-                    value={digit}
-                    onChange={e => {
-                      const newOtp = [...otp];
-                      newOtp[i] = e.target.value.replace(/\D/g, "");
-                      setOtp(newOtp);
-                      if (e.target.value && i < 5) {
-                        document.getElementById(`otp-${i + 1}`)?.focus();
-                      }
-                    }}
-                  />
-                ))}
+              <div className="w-6.5 h-6.5 rounded-lg bg-amber-50 flex items-center justify-center shrink-0">
+                <Zap className="w-3.5 h-3.5 text-amber-500" />
               </div>
-
-              <div className="text-center text-xs font-semibold">
-                <span className="text-muted-foreground">Didn't receive code? </span>
-                <button type="button" className="text-suvidha-navy hover:underline">Resend in 0:25</button>
+              <div>
+                <p className="leading-tight text-gray-800">Power Incident</p>
+                <p className="text-[9px] text-gray-400 font-semibold mt-0.5">Call 1912</p>
               </div>
+            </a>
+            <a
+              href="tel:1906"
+              className="bg-white border border-gray-100 p-2.5 rounded-2xl flex items-center gap-2 hover:bg-gray-50 shadow-2xs transition-colors"
+            >
+              <div className="w-6.5 h-6.5 rounded-lg bg-red-50 flex items-center justify-center shrink-0">
+                <Flame className="w-3.5 h-3.5 text-red-500" />
+              </div>
+              <div>
+                <p className="leading-tight text-gray-800">Gas Leakage</p>
+                <p className="text-[9px] text-gray-400 font-semibold mt-0.5">Call 1906</p>
+              </div>
+            </a>
+          </div>
+        </div>
 
-              <Button
-                onClick={handleOtpSubmit}
-                className="w-full h-13 text-base rounded-xl bg-suvidha-saffron hover:bg-suvidha-saffron/90 text-white mt-auto font-bold shadow-sm"
-                disabled={otp.some(d => !d)}
-              >
-                {t.btnVerify}
-              </Button>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </div>
     </PageTransition>
   );

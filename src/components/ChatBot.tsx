@@ -127,10 +127,10 @@ export default function ChatBot() {
             exit={{ scale: 0, opacity: 0 }}
             transition={{ type: "spring", stiffness: 260, damping: 22 }}
             onClick={() => setOpen(true)}
-            className="fixed z-40 flex items-center justify-center rounded-full
+            className="absolute z-40 flex items-center justify-center rounded-full
                        bg-suvidha-teal shadow-[0_6px_20px_rgba(56,148,148,0.45)]
                        text-white hover:scale-105 active:scale-95 transition-transform"
-            style={{ bottom: 88, right: 12, width: 50, height: 50 }}
+            style={{ bottom: 84, right: 76, width: 48, height: 48 }}
             aria-label="Open SUVIDHA Assistant"
             data-testid="button-open-chatbot"
           >
@@ -150,14 +150,14 @@ export default function ChatBot() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setOpen(false)}
-              className="fixed inset-0 bg-black/30 z-40"
+              className="absolute inset-0 bg-black/30 z-40"
             />
             <motion.div
               initial={{ y: "100%" }}
               animate={{ y: 0 }}
               exit={{ y: "100%" }}
               transition={{ type: "spring", stiffness: 340, damping: 34 }}
-              className="fixed bottom-0 left-0 right-0 z-50 flex flex-col overflow-hidden rounded-t-3xl bg-white"
+              className="absolute bottom-0 left-0 right-0 z-50 flex flex-col overflow-hidden rounded-t-3xl bg-white"
               style={{ height: "80%" }}
             >
               {/* Header */}

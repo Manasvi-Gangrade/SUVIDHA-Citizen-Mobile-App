@@ -13,8 +13,8 @@ const ALL_TICKETS = [
 const STATUS_STYLE: Record<string, string> = {
   "Resolved":          "bg-emerald-50 text-emerald-700 border border-emerald-200",
   "Assigned":          "bg-amber-50 text-amber-700 border border-amber-200",
-  "Under Review":      "bg-blue-50 text-blue-700 border border-blue-200",
-  "Submitted":         "bg-blue-50 text-blue-700 border border-blue-200",
+  "Under Review":      "bg-suvidha-navy/10 text-suvidha-navy border border-suvidha-navy/20",
+  "Submitted":         "bg-suvidha-navy/10 text-suvidha-navy border border-suvidha-navy/20",
   "Submitted Offline": "bg-orange-50 text-orange-700 border border-orange-200",
 };
 

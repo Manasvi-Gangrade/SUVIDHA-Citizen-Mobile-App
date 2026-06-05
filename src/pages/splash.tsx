@@ -34,7 +34,7 @@ export default function Splash() {
       if (user) {
         setLocation("/dashboard");
       } else {
-        setLocation("/onboarding");
+        setLocation("/login");
       }
     }, 5200);
     return () => {

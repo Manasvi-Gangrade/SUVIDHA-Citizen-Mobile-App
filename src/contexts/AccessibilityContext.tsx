@@ -182,8 +182,8 @@ export const AccessibilityProvider: React.FC<{ children: React.ReactNode }> = ({
             id: newId,
             ago: "Just now",
             status: "Submitted",
-            dot: "bg-blue-400",
-            badge: "bg-blue-50 text-blue-700 border-blue-200"
+            dot: "bg-suvidha-navy/70",
+            badge: "bg-suvidha-navy/10 text-suvidha-navy border-suvidha-navy/20"
           };
         }
         return t;

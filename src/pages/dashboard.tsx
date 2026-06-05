@@ -6,7 +6,7 @@ import { GoogleTranslateWidget } from "@/components/StandaloneTranslateTTS";
 import {
   FileWarning, Zap, FileText, Search,
   BellRing, Plus, Flame, Building2,
-  User, Smartphone, Mic, Sparkles, AlertCircle, Lock
+  User, Smartphone, Mic, Sparkles, AlertCircle, Lock, MapPin
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -39,7 +39,7 @@ const CAROUSEL_DATA = [
     tag: "Civic Kiosks",
     title: "Kiosk QR Link",
     desc: "Scan the receipt barcode of physical kiosks to import requests.",
-    bg: "from-blue-600 to-slate-900",
+    bg: "from-suvidha-navy to-slate-900",
   },
   {
     tag: "Billing Safety",
@@ -58,7 +58,7 @@ const CAROUSEL_DATA = [
 const RECENT = [
   { title: "Streetlight repair pending",  id: "SVD-8892", dept: "Municipal",   ago: "2 days ago",  status: "Assigned",     dot: "bg-amber-400",   badge: "bg-amber-50 text-amber-700"   },
   { title: "Gas Subsidy Renewal",         id: "SVD-8100", dept: "Gas",         ago: "5 days ago",  status: "Resolved",     dot: "bg-emerald-500", badge: "bg-emerald-50 text-emerald-700" },
-  { title: "New Electricity Connection",  id: "SVD-8845", dept: "Electricity", ago: "1 week ago",  status: "Under Review", dot: "bg-blue-400",    badge: "bg-blue-50 text-blue-700"     },
+  { title: "New Electricity Connection",  id: "SVD-8845", dept: "Electricity", ago: "1 week ago",  status: "Under Review", dot: "bg-suvidha-navy/70", badge: "bg-suvidha-navy/10 text-suvidha-navy" },
 ];
 
 export default function Dashboard() {
@@ -83,49 +83,6 @@ export default function Dashboard() {
     <PageTransition>
       <div className="flex flex-col bg-gray-50 pb-8 flex-1">
         
-        {/* Custom Premium Header matching user's image */}
-        <div className="bg-gradient-to-b from-blue-50 to-transparent px-4.5 pt-5 pb-2 flex items-center justify-between shrink-0 relative">
-          <div className="flex items-center gap-2">
-            {/* emblem + logo */}
-            <div className="w-8.5 h-8.5 bg-white rounded-xl flex items-center justify-center shadow-sm border border-gray-100">
-              <svg viewBox="0 0 32 32" className="w-6.5 h-6.5">
-                <circle cx="16" cy="16" r="11" fill="none" stroke="#162D5A" strokeWidth="1.5" />
-                <circle cx="16" cy="16" r="2.5" fill="#162D5A" />
-                {Array.from({ length: 12 }).map((_, i) => {
-                  const a = (i * 30 * Math.PI) / 180;
-                  return (
-                    <line
-                      key={i}
-                      x1={16 + 3 * Math.cos(a)} y1={16 + 3 * Math.sin(a)}
-                      x2={16 + 10 * Math.cos(a)} y2={16 + 10 * Math.sin(a)}
-                      stroke={i % 3 === 0 ? "#FF8000" : "#162D5A"}
-                      strokeWidth={i % 3 === 0 ? "1.2" : "0.6"}
-                    />
-                  );
-                })}
-              </svg>
-            </div>
-            {/* Phone/kiosk indicator icon */}
-            <div className="w-8.5 h-8.5 rounded-xl bg-orange-50 flex items-center justify-center shadow-sm border border-orange-100">
-              <Smartphone className="w-4 h-4 text-suvidha-saffron" />
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2.5 z-40">
-            {/* Google Translate Widget */}
-            <GoogleTranslateWidget />
-
-            {/* Profile Avatar with badge */}
-            <button
-              onClick={() => setLocation("/profile")}
-              className="relative w-8.5 h-8.5 rounded-full bg-suvidha-navy flex items-center justify-center shadow-sm text-white hover:opacity-90 active:scale-95 transition-transform"
-            >
-              <User className="w-4 h-4" />
-              <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-suvidha-saffron rounded-full border border-white" />
-            </button>
-          </div>
-        </div>
-
         {/* Welcome Text block */}
         <div className="px-4.5 pt-1.5 pb-0.5">
           <p className="text-gray-400 text-xs font-semibold uppercase tracking-wider">{greeting},</p>
@@ -257,7 +214,7 @@ export default function Dashboard() {
               { label: "Grievance", icon: FileWarning, bg: "bg-emerald-500", text: "text-white", route: "/grievance/new" },
               { label: "Emergency", icon: Flame,       bg: "bg-rose-500",    text: "text-white", route: "/services/gas" },
               { label: "Outages",   icon: AlertCircle, bg: "bg-violet-500",  text: "text-white", route: "/services/electricity" },
-              { label: "Utility",   icon: Building2,   bg: "bg-blue-500",    text: "text-white", route: "/services/municipal" }
+              { label: "Utility",   icon: Building2,   bg: "bg-suvidha-navy", text: "text-white", route: "/services/municipal" }
             ].map(qs => {
               const Icon = qs.icon;
               return (
@@ -273,6 +230,34 @@ export default function Dashboard() {
                 </button>
               );
             })}
+          </div>
+        </div>
+
+        {/* Kiosk Locator Banner Card */}
+        <div className="px-4.5 py-4 bg-white border-b border-gray-100 shadow-2xs">
+          <div className="flex items-center gap-1.5 mb-3">
+            <span className="text-suvidha-navy font-heading font-bold text-xs uppercase tracking-wider">🗺️ Kiosk & Live Queue Map</span>
+          </div>
+          <div className="bg-gradient-to-br from-suvidha-navy to-suvidha-navy/85 border border-suvidha-navy/20 rounded-2xl p-4 flex gap-3 items-center relative overflow-hidden">
+            {/* Watermark map pin */}
+            <MapPin className="absolute right-[-14px] bottom-[-14px] w-24 h-24 text-white/5 -rotate-12 pointer-events-none" />
+            
+            <div className="flex-1 space-y-2">
+              <h4 className="font-heading font-bold text-white text-xs">Find Kiosks & Check Queue Loads</h4>
+              <p className="text-[10px] text-white/85 leading-normal font-semibold">
+                Locate active physical service kiosks in your neighborhood, view live wait times, and get direction coordinates.
+              </p>
+              <button
+                onClick={() => setLocation("/locator")}
+                className="px-3 py-1.5 bg-suvidha-saffron hover:bg-suvidha-saffron/90 text-white rounded-lg text-[10px] font-black active:scale-[0.98] transition-all shadow-sm"
+              >
+                Open Kiosk Map
+              </button>
+            </div>
+            
+            <div className="w-16 h-16 shrink-0 rounded-xl bg-white/10 flex items-center justify-center border border-white/20">
+              <MapPin className="w-8 h-8 text-suvidha-saffron" />
+            </div>
           </div>
         </div>
 
@@ -296,7 +281,7 @@ export default function Dashboard() {
             
             {/* Mock DigiLocker logo matching the reference style */}
             <div className="w-20 h-14 shrink-0 bg-white border border-gray-200/50 rounded-xl flex flex-col items-center justify-center p-1.5 shadow-2xs">
-              <span className="text-[8px] font-bold text-blue-900 tracking-wider">DigiLocker</span>
+              <span className="text-[8px] font-bold text-suvidha-navy tracking-wider">DigiLocker</span>
               <div className="w-5 h-5 rounded bg-indigo-50 border border-indigo-100 flex items-center justify-center mt-1">
                 <Lock className="w-3 h-3 text-indigo-700" />
               </div>
@@ -320,7 +305,7 @@ export default function Dashboard() {
         <div className="px-4.5 pt-4 space-y-3">
           <div className="flex items-center justify-between">
             <h3 className="text-[11px] font-bold text-gray-400 uppercase tracking-widest">Recent Activity</h3>
-            <Link href="/tickets" className="text-[10px] font-bold text-suvidha-navy hover:underline">View All →</Link>
+            <Link href="/track" className="text-[10px] font-bold text-suvidha-navy hover:underline">View All →</Link>
           </div>
           <div className="flex flex-col gap-2">
             {RECENT.map(t => (
@@ -341,10 +326,10 @@ export default function Dashboard() {
         {/* FAB */}
         <button
           onClick={() => setLocation("/grievance/new")}
-          className="fixed z-45 flex items-center justify-center rounded-full
+          className="absolute z-45 flex items-center justify-center rounded-full
                      bg-suvidha-saffron hover:bg-suvidha-saffron/90 active:scale-95
                      shadow-[0_4px_16px_rgba(255,128,0,0.35)] text-white transition-all"
-          style={{ bottom: 84, right: 18, width: 48, height: 48 }}
+          style={{ bottom: 84, right: 16, width: 48, height: 48 }}
           aria-label="File new grievance"
           data-testid="button-fab-grievance"
         >

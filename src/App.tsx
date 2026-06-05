@@ -9,7 +9,7 @@ import Splash from "@/pages/splash";
 import Onboarding from "@/pages/onboarding";
 import Login from "@/pages/login";
 import Dashboard from "@/pages/dashboard";
-import Tickets from "@/pages/tickets";
+import QueueToken from "@/pages/queue";
 import Locker from "@/pages/locker";
 import FAQ from "@/pages/faq";
 import Services from "@/pages/services";
@@ -17,6 +17,7 @@ import NewGrievance from "@/pages/grievance";
 import TrackRequest from "@/pages/track";
 import Profile from "@/pages/profile";
 import ServiceForm from "@/pages/service-form";
+import KioskLocator from "@/pages/locator";
 import NotFound from "@/pages/not-found";
 
 import AdminLogin from "@/pages/admin/AdminLogin";
@@ -36,12 +37,20 @@ function CitizenRouter() {
         <Route path="/onboarding" component={Onboarding} />
         <Route path="/login" component={Login} />
         <Route path="/dashboard" component={Dashboard} />
-        <Route path="/tickets" component={Tickets} />
+        <Route path="/queue" component={QueueToken} />
+        <Route path="/tickets">
+          {() => {
+            const [, setLoc] = useLocation();
+            setLoc("/track");
+            return null;
+          }}
+        </Route>
         <Route path="/locker" component={Locker} />
         <Route path="/faq" component={FAQ} />
         <Route path="/services/:dept" component={Services} />
         <Route path="/grievance/new" component={NewGrievance} />
         <Route path="/track" component={TrackRequest} />
+        <Route path="/locator" component={KioskLocator} />
         <Route path="/profile" component={Profile} />
         <Route path="/service-form/:type" component={ServiceForm} />
         <Route component={NotFound} />

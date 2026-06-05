@@ -1,10 +1,10 @@
 import { Link, useLocation } from "wouter";
-import { Home, FileText, MapPin, Lock, HelpCircle } from "lucide-react";
+import { Home, Ticket, MapPin, Lock, HelpCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const NAV_ITEMS = [
   { href: "/dashboard", icon: Home,        label: "Home"    },
-  { href: "/tickets",   icon: FileText,    label: "Tickets" },
+  { href: "/queue",     icon: Ticket,      label: "Queue"   },
   { href: "/track",     icon: MapPin,      label: "Track"   },
   { href: "/locker",    icon: Lock,        label: "Locker"  },
   { href: "/faq",       icon: HelpCircle,  label: "Help"    },
@@ -16,7 +16,7 @@ export default function BottomNav() {
   return (
     /* fixed + will-change-transform on PhoneFrame keeps this inside the container */
     <nav
-      className="fixed bottom-0 left-0 right-0 z-40
+      className="absolute bottom-0 left-0 right-0 z-40
                  bg-white border-t border-gray-200
                  shadow-[0_-2px_12px_rgba(0,0,0,0.08)]
                  flex items-stretch h-[68px]"
