@@ -46,7 +46,7 @@ export default function Splash() {
   }, [setLocation]);
 
   return (
-    <div className="w-full h-full bg-suvidha-navy flex flex-col items-center justify-between relative overflow-hidden py-12">
+    <div className="w-full min-h-[100dvh] bg-suvidha-navy flex flex-col items-center justify-between relative overflow-hidden py-12">
 
       {/* Video Background */}
       <video
@@ -56,7 +56,7 @@ export default function Splash() {
         playsInline
         className="absolute inset-0 w-full h-full object-cover opacity-25 mix-blend-overlay pointer-events-none"
       >
-        <source src="/splash-bg.mp4" type="video/mp4" />
+        <source src="/videos/14904045_3840_2160_30fps.mp4" type="video/mp4" />
       </video>
 
       {/* Background aurora blobs */}
